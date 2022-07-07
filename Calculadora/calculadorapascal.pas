@@ -127,6 +127,7 @@ begin
 end;
 
 procedure TCalculator.ClearVisualization();
+// Metodo para checar se ha zero no visor e substituir com a primeira operacao ou numero que o usuario digitar
 begin
   if Visualization.Text = '0' then
   begin
@@ -135,11 +136,13 @@ begin
 end;
 
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
+// Botao para limpar a entrada de operacao
 begin
   ClearOperationFlag();
 end;
 
 procedure TCalculator.BackspaceButtonClick(Sender: TObject);
+// Botao para apagar um digito ou operacao, ele verifica qual numero ou operacao que esta no array e apaga
 begin
 
 end;
