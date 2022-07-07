@@ -1,7 +1,7 @@
 object Calculator: TCalculator
-  Left = 394
+  Left = -712
   Height = 443
-  Top = 50
+  Top = 293
   Width = 521
   Caption = 'Calculator'
   ClientHeight = 443
@@ -379,5 +379,23 @@ object Calculator: TCalculator
     Caption = 'Memory Clear'
     OnClick = MemoryClearButtonClick
     TabOrder = 39
+  end
+  object RightParenthesis: TButton
+    Left = 152
+    Height = 49
+    Top = 80
+    Width = 51
+    Caption = ')'
+    OnClick = RightParenthesisClick
+    TabOrder = 41
+  end
+  object LeftParenthesis: TButton
+    Left = 96
+    Height = 50
+    Top = 80
+    Width = 50
+    Caption = '('
+    OnClick = LeftParenthesisClick
+    TabOrder = 42
   end
 end

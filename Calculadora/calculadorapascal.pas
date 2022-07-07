@@ -12,6 +12,8 @@ type
   { TCalculator }
 
   TCalculator = class(TForm)
+    RightParenthesis: TButton;
+    LeftParenthesis: TButton;
     ClearButton: TButton;
     EqualButton: TButton;
     BackspaceButton: TButton;
@@ -68,6 +70,7 @@ type
     procedure FiveButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FourButtonClick(Sender: TObject);
+    procedure LeftParenthesisClick(Sender: TObject);
     procedure LnButtonClick(Sender: TObject);
     procedure LogButtonClick(Sender: TObject);
     procedure MemoryClearButtonClick(Sender: TObject);
@@ -83,6 +86,7 @@ type
     procedure PlusButtonClick(Sender: TObject);
     procedure PointButtonClick(Sender: TObject);
     procedure RadianRadioChange(Sender: TObject);
+    procedure RightParenthesisClick(Sender: TObject);
     procedure SevenButtonClick(Sender: TObject);
     procedure SignalButtonClick(Sender: TObject);
     procedure SinButtonClick(Sender: TObject);
@@ -124,7 +128,10 @@ end;
 
 procedure TCalculator.ClearVisualization();
 begin
-
+  if Visualization.Text = '0' then
+  begin
+    Visualization.Text := '';
+  end;
 end;
 
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
@@ -146,7 +153,8 @@ end;
 
 procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'cos(';
 end;
 
 procedure TCalculator.DegreeRadioChange(Sender: TObject);
@@ -161,12 +169,9 @@ end;
 
 procedure TCalculator.EightButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '8';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.EqualButtonClick(Sender: TObject);
@@ -176,22 +181,21 @@ end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'e^';
 end;
 
 procedure TCalculator.FactorialButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '!';
 end;
 
 procedure TCalculator.FiveButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '5';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := StrToFloat(Visualization.Text);
 end;
 
 procedure TCalculator.FormCreate(Sender: TObject);
@@ -201,22 +205,27 @@ end;
 
 procedure TCalculator.FourButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '4';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
+end;
+
+procedure TCalculator.LeftParenthesisClick(Sender: TObject);
+begin
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '(';
 end;
 
 procedure TCalculator.LnButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'ln(';
 end;
 
 procedure TCalculator.LogButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'log(';
 end;
 
 procedure TCalculator.MemoryClearButtonClick(Sender: TObject);
@@ -253,27 +262,22 @@ end;
 
 procedure TCalculator.NineButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '9';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.OneButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '1';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := StrToFloat(Visualization.Text);
 end;
 
 procedure TCalculator.OneXButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '1/';
 end;
 
 procedure TCalculator.PiButtonClick(Sender: TObject);
@@ -288,8 +292,7 @@ begin
            FSTP    Temp
   end;
   Visualization.Text := FloatToStr(Temp);
-  MemoryCalculator := StrToFloat(Visualization.Text);
-
+  //MemoryCalculator := StrToFloat(Visualization.Text);
 end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
@@ -313,14 +316,17 @@ begin
 
 end;
 
+procedure TCalculator.RightParenthesisClick(Sender: TObject);
+begin
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + ')';
+end;
+
 procedure TCalculator.SevenButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '7';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.SignalButtonClick(Sender: TObject);
@@ -330,23 +336,24 @@ end;
 
 procedure TCalculator.SinButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'sin(';
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.SixButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '6';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 var
   Temp: real;
 begin
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '√';
   Temp := MemoryCalculator;
   {$asmmode intel}
   asm
@@ -356,22 +363,20 @@ begin
            FSTP    Temp
   end;
   MemoryCalculator := Temp;
-  Visualization.Text := floattostr(MemoryCalculator);
+  //Visualization.Text := floattostr(MemoryCalculator);
 end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + 'tan(';
 end;
 
 procedure TCalculator.ThreeButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '3';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.InverseCheckChange(Sender: TObject);
@@ -381,12 +386,9 @@ end;
 
 procedure TCalculator.TwoButtonClick(Sender: TObject);
 begin
-  if Visualization.Text = '0' then
-  begin
-    Visualization.Text := '';
-  end;
+  ClearVisualization();
   Visualization.Text := Visualization.Text + '2';
-  MemoryCalculator := strtofloat(Visualization.Text);
+  //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
 procedure TCalculator.VisualizationChange(Sender: TObject);
@@ -397,12 +399,14 @@ end;
 
 procedure TCalculator.X2ButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '²';
 end;
 
 procedure TCalculator.XyButtonClick(Sender: TObject);
 begin
-
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + '^';
 end;
 
 procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
@@ -412,10 +416,6 @@ end;
 
 procedure TCalculator.ZeroButtonClick(Sender: TObject);
 begin
-  // if Visualization.Text = '0' then
-  //begin
-  //  Visualization.Text := '';
-  //end;
   Visualization.Text := Visualization.Text + '0';
   MemoryCalculator := strtofloat(Visualization.Text);
 end;
