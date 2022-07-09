@@ -55,6 +55,7 @@ type
     DegreeRadio: TRadioButton;
     RadianRadio: TRadioButton;
     Visualization: TEdit;
+    procedure SendNumber();
     procedure ClearVisualization();
     procedure ClearOperationFlag();
     procedure BackspaceButtonClick(Sender: TObject);
@@ -103,10 +104,24 @@ type
     procedure ZeroButtonClick(Sender: TObject);
   private
 
+    //Declaracao de tipos e variaveis globais
   public
+
+    //Declaracao de tipos
+  type
+
+    //Criacao de um array com as operacoes
+    Operations = array[1..50] of string;
+
+    //Declaracao de variaveis globais
   var
+
+    //Declaracao de variavel para a operacao de restauracao de memoria
     MemoryCalculator, MemoryStore: real;
-    FloatingPoint, Sum, Subtraction, Division, Multiplication: boolean;
+    TemporaryNumber: string;
+    OperationFlag, FloatingPoint, Sum, Subtraction, Division, Multiplication: boolean;
+    OperationIndex: integer;
+    OperationList: Operations;
   end;
 
 var
@@ -135,6 +150,12 @@ begin
   end;
 end;
 
+procedure TCalculator.SendNumber();
+begin
+  OperationIndex := OperationIndex + 1;
+  OperationList[OperationIndex] := Visualization.Text;
+end;
+
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
 // Botao para limpar a entrada de operacao
 begin
@@ -148,7 +169,15 @@ begin
 end;
 
 procedure TCalculator.ClearButtonClick(Sender: TObject);
+var
+  Index: integer;
 begin
+  OperationFlag := False;
+  for Index := 1 to OperationIndex do
+  begin
+    OperationList[Index] := '0';
+  end;
+  OperationIndex := 0;
   Visualization.Text := FloatToStr(0);
   MemoryCalculator := 0;
   FloatingPoint := False;
@@ -156,6 +185,7 @@ end;
 
 procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + 'cos(';
 end;
@@ -167,7 +197,7 @@ end;
 
 procedure TCalculator.DivisionButtonClick(Sender: TObject);
 begin
-
+  OperationFlag := True;
 end;
 
 procedure TCalculator.EightButtonClick(Sender: TObject);
@@ -178,12 +208,22 @@ begin
 end;
 
 procedure TCalculator.EqualButtonClick(Sender: TObject);
+var
+  Index: integer;
 begin
-
+  if OperationFlag = True then
+  begin
+    SendNumber();
+    for Index := 1 to OperationIndex do
+    begin
+      Visualization.Text := Visualization.Text + OperationList[Index];
+    end;
+  end;
 end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + 'e^';
 end;
@@ -255,12 +295,12 @@ end;
 
 procedure TCalculator.MinusButtonClick(Sender: TObject);
 begin
-
+  OperationFlag := True;
 end;
 
 procedure TCalculator.MultiplicationButtonClick(Sender: TObject);
 begin
-
+  OperationFlag := True;
 end;
 
 procedure TCalculator.NineButtonClick(Sender: TObject);
@@ -273,12 +313,13 @@ end;
 procedure TCalculator.OneButtonClick(Sender: TObject);
 begin
   ClearVisualization();
+
   Visualization.Text := Visualization.Text + '1';
-  //MemoryCalculator := StrToFloat(Visualization.Text);
 end;
 
 procedure TCalculator.OneXButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + '1/';
 end;
@@ -300,7 +341,11 @@ end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
 begin
-
+  OperationFlag := True;
+  Visualization.Text := Visualization.Text + '+';
+  OperationIndex := OperationIndex + 1;
+  OperationList[OperationIndex] := '+';
+  SendNumber();
 end;
 
 procedure TCalculator.PointButtonClick(Sender: TObject);
@@ -339,6 +384,7 @@ end;
 
 procedure TCalculator.SinButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + 'sin(';
   //MemoryCalculator := strtofloat(Visualization.Text);
@@ -355,22 +401,24 @@ procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 var
   Temp: real;
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '√';
-  Temp := MemoryCalculator;
-  {$asmmode intel}
-  asm
-           FINIT
-           FLD     Temp
-           FSQRT
-           FSTP    Temp
-  end;
-  MemoryCalculator := Temp;
+  OperationFlag := True;
+  //ClearVisualization();
+  //Visualization.Text := Visualization.Text + '√';
+  //Temp := MemoryCalculator;
+  //{$asmmode intel}
+  //asm
+  //         FINIT
+  //         FLD     Temp
+  //         FSQRT
+  //         FSTP    Temp
+  //end;
+  //MemoryCalculator := Temp;
   //Visualization.Text := floattostr(MemoryCalculator);
 end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + 'tan(';
 end;
@@ -402,19 +450,21 @@ end;
 
 procedure TCalculator.X2ButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + '²';
 end;
 
 procedure TCalculator.XyButtonClick(Sender: TObject);
 begin
+  OperationFlag := True;
   ClearVisualization();
   Visualization.Text := Visualization.Text + '^';
 end;
 
 procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
 begin
-
+  OperationFlag := True;
 end;
 
 procedure TCalculator.ZeroButtonClick(Sender: TObject);

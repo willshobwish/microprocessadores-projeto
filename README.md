@@ -25,3 +25,4 @@ O Forms é baseado em classe, assim será necessario fazer um metodo para que el
 
 Fazer um array com as operações e os valores para colocar dentro da FPU
 
+git clean -fdx
