@@ -1,11 +1,11 @@
 object Calculator: TCalculator
   Left = -679
-  Height = 443
+  Height = 512
   Top = 378
-  Width = 521
+  Width = 544
   Caption = 'Calculator'
-  ClientHeight = 443
-  ClientWidth = 521
+  ClientHeight = 512
+  ClientWidth = 544
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object ClearButton: TButton
@@ -397,5 +397,31 @@ object Calculator: TCalculator
     Caption = '('
     OnClick = LeftParenthesisClick
     TabOrder = 42
+  end
+  object DebugVisualization: TEdit
+    Left = 40
+    Height = 23
+    Top = 416
+    Width = 442
+    OnChange = DebugVisualizationChange
+    TabOrder = 43
+    Text = 'Debug'
+  end
+  object FirstNumberVisualization: TEdit
+    Left = 40
+    Height = 23
+    Top = 440
+    Width = 80
+    OnChange = FirstNumberVisualizationChange
+    TabOrder = 44
+    Text = 'First'
+  end
+  object SecondNumberVisualization: TEdit
+    Left = 40
+    Height = 23
+    Top = 464
+    Width = 80
+    TabOrder = 45
+    Text = 'Second'
   end
 end
