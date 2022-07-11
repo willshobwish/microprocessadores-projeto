@@ -1,11 +1,11 @@
 object Calculator: TCalculator
-  Left = -679
-  Height = 512
-  Top = 378
-  Width = 544
+  Left = -1083
+  Height = 600
+  Top = 307
+  Width = 872
   Caption = 'Calculator'
-  ClientHeight = 512
-  ClientWidth = 544
+  ClientHeight = 600
+  ClientWidth = 872
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object ClearButton: TButton
@@ -153,7 +153,7 @@ object Calculator: TCalculator
     TabOrder = 15
   end
   object OneButton: TButton
-    Left = 152
+    Left = 153
     Height = 50
     Top = 304
     Width = 50
@@ -423,5 +423,24 @@ object Calculator: TCalculator
     Width = 80
     TabOrder = 45
     Text = 'Second'
+  end
+  object IndexDisplay: TEdit
+    Left = 40
+    Height = 23
+    Top = 488
+    Width = 80
+    TabOrder = 46
+    Text = 'Index'
+  end
+  object Memo1: TMemo
+    Left = 488
+    Height = 362
+    Top = 80
+    Width = 112
+    Lines.Strings = (
+      'Memo1'
+    )
+    OnChange = Memo1Change
+    TabOrder = 47
   end
 end
