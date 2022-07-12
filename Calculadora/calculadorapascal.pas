@@ -22,16 +22,16 @@ type
     ClearButton: TButton;
     EqualButton: TButton;
     BackspaceButton: TButton;
-    EightButton: TButton;
-    FiveButton: TButton;
-    TwoButton: TButton;
+    Button8: TButton;
+    Button5: TButton;
+    Button2: TButton;
     PointButton: TButton;
     SignalButton: TButton;
-    SevenButton: TButton;
-    FourButton: TButton;
-    OneButton: TButton;
+    Button7: TButton;
+    Button4: TButton;
+    Button1: TButton;
     DivisionButton: TButton;
-    ZeroButton: TButton;
+    Button0: TButton;
     ClearEntryButton: TButton;
     YsqrtxButton: TButton;
     TanButton: TButton;
@@ -53,14 +53,15 @@ type
     MemoryClearButton: TButton;
     MinusButton: TButton;
     PlusButton: TButton;
-    NineButton: TButton;
-    SixButton: TButton;
-    ThreeButton: TButton;
+    Button9: TButton;
+    Button6: TButton;
+    Button3: TButton;
     InverseCheck: TCheckBox;
     DegreeRadio: TRadioButton;
     RadianRadio: TRadioButton;
     Visualization: TEdit;
     //procedure SendNumber();
+    procedure EnviarNumeroLista(Numero: string);
     procedure ClearVisualization();
     procedure ClearOperationFlag();
     procedure BackspaceButtonClick(Sender: TObject);
@@ -71,13 +72,13 @@ type
     procedure DivisionButtonClick(Sender: TObject);
     procedure DebugVisualizationChange(Sender: TObject);
     procedure FirstNumberVisualizationChange(Sender: TObject);
-    procedure EightButtonClick(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
     procedure EqualButtonClick(Sender: TObject);
     procedure ExButtonClick(Sender: TObject);
     procedure FactorialButtonClick(Sender: TObject);
-    procedure FiveButtonClick(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FourButtonClick(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
     procedure LeftParenthesisClick(Sender: TObject);
     procedure LnButtonClick(Sender: TObject);
     procedure LogButtonClick(Sender: TObject);
@@ -88,38 +89,38 @@ type
     procedure MemoryStoreButtonClick(Sender: TObject);
     procedure MinusButtonClick(Sender: TObject);
     procedure MultiplicationButtonClick(Sender: TObject);
-    procedure NineButtonClick(Sender: TObject);
-    procedure OneButtonClick(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     procedure OneXButtonClick(Sender: TObject);
     procedure PiButtonClick(Sender: TObject);
     procedure PlusButtonClick(Sender: TObject);
     procedure PointButtonClick(Sender: TObject);
     procedure RadianRadioChange(Sender: TObject);
     procedure RightParenthesisClick(Sender: TObject);
-    procedure SevenButtonClick(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
     procedure SignalButtonClick(Sender: TObject);
     procedure SinButtonClick(Sender: TObject);
-    procedure SixButtonClick(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
     procedure SqrtxButtonClick(Sender: TObject);
     procedure TanButtonClick(Sender: TObject);
-    procedure ThreeButtonClick(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
     procedure InverseCheckChange(Sender: TObject);
-    procedure TwoButtonClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure VisualizationChange(Sender: TObject);
     procedure X2ButtonClick(Sender: TObject);
     procedure XyButtonClick(Sender: TObject);
     procedure YsqrtxButtonClick(Sender: TObject);
-    procedure ZeroButtonClick(Sender: TObject);
+    procedure Button0Click(Sender: TObject);
   private
 
     //Declaracao de tipos e variaveis globais
   public
 
     //Declaracao de tipos
-  type
+    //type
 
-    //Criacao de um array com as operacoes
-    Operations = array[0..50] of string;
+    //  //Criacao de um array com as operacoes
+    //  Operations = array[0..50] of string;
 
     //Declaracao de variaveis globais
   var
@@ -127,9 +128,13 @@ type
     //Declaracao de variavel para a operacao de restauracao de memoria
     MemoryCalculator, MemoryStore: real;
     TemporaryNumber: string;
-    OperationFlag, FloatingPoint, Sum, Subtraction, Division, Multiplication: boolean;
+    OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction, Division, Multiplication: boolean;
     OperationIndex: integer;
-    OperationList: Operations;
+    //Lista de todas as operacoes que o usuario digitar
+    OperationList: array[0..100] of string;
+    NotacaoPolonesaList: array[0..100] of string;
+    //OperationList: array[0..100] of string;
+
   end;
 
 var
@@ -157,12 +162,6 @@ begin
     Visualization.Text := '';
   end;
 end;
-
-//procedure TCalculator.SendNumber();
-//begin
-//  OperationIndex := OperationIndex + 1;
-//  OperationList[OperationIndex] := Visualization.Text;
-//end;
 
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
 // Botao para limpar a entrada de operacao
@@ -194,6 +193,14 @@ begin
   FloatingPoint := False;
 end;
 
+//Enviar o numero para a visualizacao e variavel temporaria que armazena o numero
+procedure TCalculator.EnviarNumeroLista(Numero: string);
+begin
+  ClearVisualization();
+  Visualization.Text := Visualization.Text + Numero;
+  TemporaryNumber := TemporaryNumber + Numero;
+end;
+
 procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
   OperationFlag := True;
@@ -209,6 +216,12 @@ end;
 procedure TCalculator.DivisionButtonClick(Sender: TObject);
 begin
   OperationFlag := True;
+  OperationIndex += 1;
+  OperationList[OperationIndex] := TemporaryNumber;
+  TemporaryNumber := '';
+  Visualization.Text := Visualization.Text + '/';
+  OperationIndex += 1;
+  OperationList[OperationIndex] := '/';
 end;
 
 procedure TCalculator.DebugVisualizationChange(Sender: TObject);
@@ -221,11 +234,9 @@ begin
 
 end;
 
-procedure TCalculator.EightButtonClick(Sender: TObject);
+procedure TCalculator.Button8Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '8';
-  TemporaryNumber := TemporaryNumber + '8';
+  EnviarNumeroLista('8');
 end;
 
 //Funcoes para realizar os calculos na FPU
@@ -266,7 +277,8 @@ begin
     begin
       //[Debug] Exibicao na visualizacao para testes
       //TempString := TempString + OperationList[Index];
-      Memo1.Text := Memo1.Text + '[' + inttostr(Index) + ']' + OperationList[Index] + sLineBreak ;
+      Memo1.Text := Memo1.Text + '[' + IntToStr(Index) + ']' +
+        OperationList[Index] + sLineBreak;
       case OperationList[Index] of
         '+': begin
           Result := 0;
@@ -306,12 +318,9 @@ begin
   Visualization.Text := Visualization.Text + '!';
 end;
 
-procedure TCalculator.FiveButtonClick(Sender: TObject);
+procedure TCalculator.Button5Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '5';
-  TemporaryNumber := TemporaryNumber + '5';
-  //MemoryCalculator := StrToFloat(Visualization.Text);
+  EnviarNumeroLista('5');
 end;
 
 procedure TCalculator.FormCreate(Sender: TObject);
@@ -319,12 +328,9 @@ begin
 
 end;
 
-procedure TCalculator.FourButtonClick(Sender: TObject);
+procedure TCalculator.Button4Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '4';
-  TemporaryNumber := TemporaryNumber + '4';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('4');
 end;
 
 procedure TCalculator.LeftParenthesisClick(Sender: TObject);
@@ -386,21 +392,22 @@ end;
 procedure TCalculator.MultiplicationButtonClick(Sender: TObject);
 begin
   OperationFlag := True;
+  OperationIndex += 1;
+  OperationList[OperationIndex] := TemporaryNumber;
+  TemporaryNumber := '';
+  Visualization.Text := Visualization.Text + '*';
+  OperationIndex += 1;
+  OperationList[OperationIndex] := '*';
 end;
 
-procedure TCalculator.NineButtonClick(Sender: TObject);
+procedure TCalculator.Button9Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '9';
-  TemporaryNumber := TemporaryNumber + '9';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('9');
 end;
 
-procedure TCalculator.OneButtonClick(Sender: TObject);
+procedure TCalculator.Button1Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '1';
-  TemporaryNumber := TemporaryNumber + '1';
+  EnviarNumeroLista('1');
 end;
 
 procedure TCalculator.OneXButtonClick(Sender: TObject);
@@ -461,12 +468,9 @@ begin
   Visualization.Text := Visualization.Text + ')';
 end;
 
-procedure TCalculator.SevenButtonClick(Sender: TObject);
+procedure TCalculator.Button7Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '7';
-  TemporaryNumber := TemporaryNumber + '7';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('7');
 end;
 
 procedure TCalculator.SignalButtonClick(Sender: TObject);
@@ -482,12 +486,9 @@ begin
   //MemoryCalculator := strtofloat(Visualization.Text);
 end;
 
-procedure TCalculator.SixButtonClick(Sender: TObject);
+procedure TCalculator.Button6Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '6';
-  TemporaryNumber := TemporaryNumber + '6';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('6');
 end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
@@ -495,18 +496,6 @@ var
   Temp: real;
 begin
   OperationFlag := True;
-  //ClearVisualization();
-  //Visualization.Text := Visualization.Text + '√';
-  //Temp := MemoryCalculator;
-  //{$asmmode intel}
-  //asm
-  //         FINIT
-  //         FLD     Temp
-  //         FSQRT
-  //         FSTP    Temp
-  //end;
-  //MemoryCalculator := Temp;
-  //Visualization.Text := floattostr(MemoryCalculator);
 end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
@@ -516,12 +505,9 @@ begin
   Visualization.Text := Visualization.Text + 'tan(';
 end;
 
-procedure TCalculator.ThreeButtonClick(Sender: TObject);
+procedure TCalculator.Button3Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '3';
-  TemporaryNumber := TemporaryNumber + '3';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('3');
 end;
 
 procedure TCalculator.InverseCheckChange(Sender: TObject);
@@ -529,12 +515,9 @@ begin
 
 end;
 
-procedure TCalculator.TwoButtonClick(Sender: TObject);
+procedure TCalculator.Button2Click(Sender: TObject);
 begin
-  ClearVisualization();
-  Visualization.Text := Visualization.Text + '2';
-  TemporaryNumber := TemporaryNumber + '2';
-  //MemoryCalculator := strtofloat(Visualization.Text);
+  EnviarNumeroLista('2');
 end;
 
 procedure TCalculator.VisualizationChange(Sender: TObject);
@@ -562,10 +545,12 @@ begin
   OperationFlag := True;
 end;
 
-procedure TCalculator.ZeroButtonClick(Sender: TObject);
+procedure TCalculator.Button0Click(Sender: TObject);
 begin
-  Visualization.Text := Visualization.Text + '0';
-  TemporaryNumber := TemporaryNumber + '0';
+  if Visualization.Text <> '0' then
+  begin
+    EnviarNumeroLista('0');
+  end;
 
 end;
 

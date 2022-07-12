@@ -1,7 +1,7 @@
 object Calculator: TCalculator
-  Left = -1083
+  Left = -1032
   Height = 600
-  Top = 307
+  Top = 226
   Width = 872
   Caption = 'Calculator'
   ClientHeight = 600
@@ -53,31 +53,31 @@ object Calculator: TCalculator
     OnClick = PlusButtonClick
     TabOrder = 4
   end
-  object NineButton: TButton
+  object Button9: TButton
     Left = 264
     Height = 50
     Top = 192
     Width = 50
     Caption = '9'
-    OnClick = NineButtonClick
+    OnClick = Button9Click
     TabOrder = 5
   end
-  object SixButton: TButton
+  object Button6: TButton
     Left = 264
     Height = 50
     Top = 248
     Width = 50
     Caption = '6'
-    OnClick = SixButtonClick
+    OnClick = Button6Click
     TabOrder = 6
   end
-  object ThreeButton: TButton
+  object Button3: TButton
     Left = 264
     Height = 50
     Top = 304
     Width = 50
     Caption = '3'
-    OnClick = ThreeButtonClick
+    OnClick = Button3Click
     TabOrder = 7
   end
   object EqualButton: TButton
@@ -98,31 +98,31 @@ object Calculator: TCalculator
     OnClick = BackspaceButtonClick
     TabOrder = 9
   end
-  object EightButton: TButton
+  object Button8: TButton
     Left = 208
     Height = 50
     Top = 192
     Width = 50
     Caption = '8'
-    OnClick = EightButtonClick
+    OnClick = Button8Click
     TabOrder = 10
   end
-  object FiveButton: TButton
+  object Button5: TButton
     Left = 208
     Height = 50
     Top = 248
     Width = 50
     Caption = '5'
-    OnClick = FiveButtonClick
+    OnClick = Button5Click
     TabOrder = 11
   end
-  object TwoButton: TButton
+  object Button2: TButton
     Left = 208
     Height = 50
     Top = 304
     Width = 50
     Caption = '2'
-    OnClick = TwoButtonClick
+    OnClick = Button2Click
     TabOrder = 12
   end
   object PointButton: TButton
@@ -130,44 +130,44 @@ object Calculator: TCalculator
     Height = 50
     Top = 360
     Width = 50
-    Caption = '.'
+    Caption = ','
     OnClick = PointButtonClick
     TabOrder = 13
   end
-  object SevenButton: TButton
-    Left = 152
+  object Button7: TButton
+    Left = 153
     Height = 50
     Top = 192
     Width = 50
     Caption = '7'
-    OnClick = SevenButtonClick
+    OnClick = Button7Click
     TabOrder = 14
   end
-  object FourButton: TButton
+  object Button4: TButton
     Left = 152
     Height = 50
     Top = 248
     Width = 50
     Caption = '4'
-    OnClick = FourButtonClick
+    OnClick = Button4Click
     TabOrder = 15
   end
-  object OneButton: TButton
+  object Button1: TButton
     Left = 153
     Height = 50
     Top = 304
     Width = 50
     Caption = '1'
-    OnClick = OneButtonClick
+    OnClick = Button1Click
     TabOrder = 16
   end
-  object ZeroButton: TButton
+  object Button0: TButton
     Left = 152
     Height = 50
     Top = 360
     Width = 50
     Caption = '0'
-    OnClick = ZeroButtonClick
+    OnClick = Button0Click
     TabOrder = 17
   end
   object Visualization: TEdit
