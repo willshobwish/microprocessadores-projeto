@@ -214,7 +214,8 @@ begin
   Multiplication := False;
 end;
 
-procedure TCalculator.LimparZero();// Metodo para checar se ha zero no visor e substituir com a primeira operacao ou numero que o usuario digitar
+procedure TCalculator.LimparZero();
+// Metodo para checar se ha zero no visor e substituir com a primeira operacao ou numero que o usuario digitar
 begin
   if Visualization.Text = '0' then
   begin
@@ -226,16 +227,22 @@ procedure TCalculator.EnviarOperacao(Simbolo: string);
 begin
   OperationFlag := True;
   ClearEntryFlag := True;
-  ListaPolonesa[IndexPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da lista polonesa
-  IndexPolonesa -= 1;                                  //Diminui o indice da lista polonesa
-  TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
+  //ListaPolonesa[IndexPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da lista polonesa
+  //IndexPolonesa -= 1;                                  //Diminui o indice da lista polonesa
+  //TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
+  //Visualization.Text := Visualization.Text + Simbolo;
+  //IndexOperacao -= 1;
+  ListaEntrada[IndexOperacao] := TemporaryNumber;
+  TemporaryNumber := '';
+  IndexOperacao += 1;
   Visualization.Text := Visualization.Text + Simbolo;
-  IndexOperacao -= 1;
   ListaEntrada[IndexOperacao] := Simbolo;
+  IndexOperacao += 1;
 end;
 
 //---Fim das procedures---
-procedure TCalculator.ClearEntryButtonClick(Sender: TObject);// Botao para limpar a entrada de operacao
+procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
+// Botao para limpar a entrada de operacao
 var
   Index: integer;
 begin
@@ -324,7 +331,6 @@ begin
 end;
 
 
-
 procedure TCalculator.EqualButtonClick(Sender: TObject);
 var
   Index: integer;
@@ -335,11 +341,11 @@ begin
   if OperationFlag = True then
   begin
     //Para contabilizar o ultimo numero que for inserido
-    IndexOperacao += 1;
     ListaEntrada[IndexOperacao] := TemporaryNumber;
+    IndexOperacao += 1;
     TemporaryNumber := '';
     //Inicio da varredura do array de operacoes
-    for Index := 1 to IndexOperacao do
+    for Index := 0 to IndexOperacao do
     begin
       //[Debug] Exibicao na visualizacao para testes
       //TempString := TempString + ListaEntrada[Index];
@@ -635,7 +641,6 @@ begin
   end;
 
 end;
-
 
 
 end.
