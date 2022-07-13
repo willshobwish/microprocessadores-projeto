@@ -1,22 +1,13 @@
 object Calculator: TCalculator
-  Left = -867
-  Height = 600
-  Top = 184
-  Width = 872
-  Caption = 'Calculator'
-  ClientHeight = 600
-  ClientWidth = 872
+  Left = -851
+  Height = 537
+  Top = 216
+  Width = 630
+  Caption = 'Calculadora'
+  ClientHeight = 537
+  ClientWidth = 630
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
-  object ClearButton: TButton
-    Left = 432
-    Height = 50
-    Top = 80
-    Width = 50
-    Caption = 'Clear'
-    OnClick = ClearButtonClick
-    TabOrder = 0
-  end
   object DivisionButton: TButton
     Left = 320
     Height = 50
@@ -25,6 +16,15 @@ object Calculator: TCalculator
     Caption = '/'
     OnClick = DivisionButtonClick
     TabOrder = 1
+  end
+  object ClearButton: TButton
+    Left = 321
+    Height = 50
+    Top = 81
+    Width = 50
+    Caption = 'C'
+    OnClick = ClearButtonClick
+    TabOrder = 0
   end
   object MultiplicationButton: TButton
     Left = 320
@@ -90,9 +90,9 @@ object Calculator: TCalculator
     TabOrder = 8
   end
   object BackspaceButton: TButton
-    Left = 208
+    Left = 153
     Height = 50
-    Top = 80
+    Top = 81
     Width = 106
     Caption = 'Backspace'
     OnClick = BackspaceButtonClick
@@ -116,15 +116,6 @@ object Calculator: TCalculator
     OnClick = Button5Click
     TabOrder = 11
   end
-  object Button2: TButton
-    Left = 208
-    Height = 50
-    Top = 304
-    Width = 50
-    Caption = '2'
-    OnClick = Button2Click
-    TabOrder = 12
-  end
   object PointButton: TButton
     Left = 264
     Height = 50
@@ -143,17 +134,17 @@ object Calculator: TCalculator
     OnClick = Button7Click
     TabOrder = 14
   end
-  object Button4: TButton
-    Left = 152
+  object Button2: TButton
+    Left = 208
     Height = 50
-    Top = 248
+    Top = 304
     Width = 50
-    Caption = '4'
-    OnClick = Button4Click
-    TabOrder = 15
+    Caption = '2'
+    OnClick = Button2Click
+    TabOrder = 12
   end
   object Button1: TButton
-    Left = 153
+    Left = 152
     Height = 50
     Top = 304
     Width = 50
@@ -201,11 +192,11 @@ object Calculator: TCalculator
     TabOrder = 19
   end
   object ClearEntryButton: TButton
-    Left = 320
+    Left = 265
     Height = 50
-    Top = 80
-    Width = 106
-    Caption = 'Clear Entry'
+    Top = 81
+    Width = 50
+    Caption = 'CE'
     OnClick = ClearEntryButtonClick
     TabOrder = 20
   end
@@ -244,15 +235,6 @@ object Calculator: TCalculator
     Caption = '√x'
     OnClick = SqrtxButtonClick
     TabOrder = 24
-  end
-  object X2Button: TButton
-    Left = 432
-    Height = 50
-    Top = 248
-    Width = 50
-    Caption = 'x²'
-    OnClick = X2ButtonClick
-    TabOrder = 25
   end
   object XyButton: TButton
     Left = 432
@@ -336,63 +318,63 @@ object Calculator: TCalculator
     TabOrder = 34
   end
   object MemoryRestoreButton: TButton
-    Left = 40
+    Left = 96
     Height = 50
     Top = 192
-    Width = 106
-    Caption = 'Memory Restore'
+    Width = 50
+    Caption = 'MR'
     OnClick = MemoryRestoreButtonClick
     TabOrder = 35
   end
   object MemoryStoreButton: TButton
-    Left = 40
+    Left = 96
     Height = 50
     Top = 248
-    Width = 106
-    Caption = 'Memory Store'
+    Width = 50
+    Caption = 'MS'
     OnClick = MemoryStoreButtonClick
     TabOrder = 36
   end
   object MemoryPlusButton: TButton
-    Left = 40
+    Left = 96
     Height = 50
     Top = 304
-    Width = 106
-    Caption = 'Memory Plus'
+    Width = 50
+    Caption = 'M+'
     OnClick = MemoryPlusButtonClick
     TabOrder = 37
   end
   object PiButton: TButton
-    Left = 40
+    Left = 96
     Height = 50
     Top = 360
-    Width = 106
+    Width = 50
     Caption = 'π'
     OnClick = PiButtonClick
     TabOrder = 38
   end
   object MemoryClearButton: TButton
-    Left = 40
+    Left = 96
     Height = 50
     Top = 136
-    Width = 106
-    Caption = 'Memory Clear'
+    Width = 50
+    Caption = 'MC'
     OnClick = MemoryClearButtonClick
     TabOrder = 39
   end
   object RightParenthesis: TButton
-    Left = 152
+    Left = 431
     Height = 49
-    Top = 80
+    Top = 81
     Width = 51
     Caption = ')'
     OnClick = RightParenthesisClick
     TabOrder = 41
   end
   object LeftParenthesis: TButton
-    Left = 96
+    Left = 375
     Height = 50
-    Top = 80
+    Top = 81
     Width = 50
     Caption = '('
     OnClick = LeftParenthesisClick
@@ -416,6 +398,15 @@ object Calculator: TCalculator
     TabOrder = 44
     Text = 'First'
   end
+  object Button4: TButton
+    Left = 152
+    Height = 50
+    Top = 248
+    Width = 50
+    Caption = '4'
+    OnClick = Button4Click
+    TabOrder = 15
+  end
   object SecondNumberVisualization: TEdit
     Left = 40
     Height = 23
@@ -429,6 +420,7 @@ object Calculator: TCalculator
     Height = 23
     Top = 488
     Width = 80
+    OnChange = IndexDisplayChange
     TabOrder = 46
     Text = 'Index'
   end
@@ -442,5 +434,14 @@ object Calculator: TCalculator
     )
     OnChange = Memo1Change
     TabOrder = 47
+  end
+  object X2Button: TButton
+    Left = 432
+    Height = 50
+    Top = 248
+    Width = 50
+    Caption = 'x²'
+    OnClick = X2ButtonClick
+    TabOrder = 25
   end
 end
