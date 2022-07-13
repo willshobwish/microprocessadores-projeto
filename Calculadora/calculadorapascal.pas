@@ -232,9 +232,13 @@ begin
   //TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
   //Visualization.Text := Visualization.Text + Simbolo;
   //IndexOperacao -= 1;
-  ListaEntrada[IndexOperacao] := TemporaryNumber;
-  TemporaryNumber := '';
-  IndexOperacao += 1;
+  if TemporaryNumber <> '' then
+    //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
+  begin
+    ListaEntrada[IndexOperacao] := TemporaryNumber;
+    TemporaryNumber := '';
+    IndexOperacao += 1;
+  end;
   Visualization.Text := Visualization.Text + Simbolo;
   ListaEntrada[IndexOperacao] := Simbolo;
   IndexOperacao += 1;
@@ -555,7 +559,7 @@ end;
 procedure TCalculator.RightParenthesisClick(Sender: TObject);
 begin
   LimparZero();
-  Visualization.Text := Visualization.Text + ')';
+  EnviarOperacao(')');
 end;
 
 procedure TCalculator.Button7Click(Sender: TObject);
