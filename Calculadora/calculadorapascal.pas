@@ -295,7 +295,9 @@ procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
   OperationFlag := True;
   LimparZero();
-  Visualization.Text := Visualization.Text + 'cos(';
+  //Visualization.Text := Visualization.Text + 'cos(';
+  EnviarOperacao('cos');
+  EnviarOperacao('(');
 end;
 
 procedure TCalculator.DegreeRadioChange(Sender: TObject);
