@@ -60,10 +60,12 @@ type
     DegreeRadio: TRadioButton;
     RadianRadio: TRadioButton;
     Visualization: TEdit;
-    //procedure SendNumber();
+    //---Procedimentos criados para o projeto---
     procedure EnviarNumeroLista(Numero: string);
     procedure ClearVisualization();
     procedure ClearOperationFlag();
+    procedure EnviarOperacao(Simbolo: string);
+    //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
     procedure ClearButtonClick(Sender: TObject);
@@ -112,29 +114,19 @@ type
     procedure YsqrtxButtonClick(Sender: TObject);
     procedure Button0Click(Sender: TObject);
   private
-
     //Declaracao de tipos e variaveis globais
   public
-
-    //Declaracao de tipos
-    //type
-
-    //  //Criacao de um array com as operacoes
-    //  Operations = array[0..50] of string;
-
-    //Declaracao de variaveis globais
   var
-
     //Declaracao de variavel para a operacao de restauracao de memoria
     MemoryCalculator, MemoryStore: real;
     TemporaryNumber: string;
-    OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction, Division, Multiplication: boolean;
+    OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
+    Division, Multiplication, ClearEntryFlag: boolean;
     OperationIndex: integer;
     //Lista de todas as operacoes que o usuario digitar
     OperationList: array[0..100] of string;
     NotacaoPolonesaList: array[0..100] of string;
     //OperationList: array[0..100] of string;
-
   end;
 
 var
@@ -145,7 +137,69 @@ implementation
 {$R *.lfm}
 
 { TCalculator }
+//---Inicio de criacao de funcoes para o projeto---
+//Funcoes para realizar os calculos na FPU
+function SumFunction(FirstNumber, SecondNumber: real): real;
+var
+  Final: real;
+begin
+    {$asmmode intel}
+  asm
+           FINIT
+           FLD     FirstNumber
+           FLD     SecondNumber
+           FADD    ST,ST(1)
+           FSTP    Final
+  end;
+  SumFunction := Final;
+end;
 
+function MinusFunction(FirstNumber, SecondNumber: real): real;
+var
+  Final: real;
+begin
+    {$asmmode intel}
+  asm
+           FINIT
+           FLD     SecondNumber
+           FLD     FirstNumber
+           FSUB    ST,ST(1)
+           FSTP    Final
+  end;
+  MinusFunction := Final;
+end;
+
+function MulFunction(FirstNumber, SecondNumber: real): real;
+var
+  Final: real;
+begin
+    {$asmmode intel}
+  asm
+           FINIT
+           FLD     FirstNumber
+           FLD     SecondNumber
+           FMUL    ST,ST(1)
+           FSTP    Final
+  end;
+  MulFunction := Final;
+end;
+
+function DivFunction(FirstNumber, SecondNumber: real): real;
+var
+  Final: real;
+begin
+    {$asmmode intel}
+  asm
+           FINIT
+           FLD     SecondNumber
+           FLD     FirstNumber
+           FDIV    ST,ST(1)
+           FSTP    Final
+  end;
+  DivFunction := Final;
+end;
+//---Fim das funcoes---
+//---Inicio das procedures---
 procedure TCalculator.ClearOperationFlag();
 begin
   Sum := False;
@@ -163,10 +217,35 @@ begin
   end;
 end;
 
-procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
-// Botao para limpar a entrada de operacao
+procedure TCalculator.EnviarOperacao(Simbolo: string);
 begin
-  ClearOperationFlag();
+  OperationFlag := True;
+  ClearEntryFlag := True;
+  OperationIndex += 1;
+  OperationList[OperationIndex] := TemporaryNumber;
+  TemporaryNumber := '';
+  Visualization.Text := Visualization.Text + Simbolo;
+  OperationIndex += 1;
+  OperationList[OperationIndex] := Simbolo;
+end;
+
+//---Fim das procedures---
+// Botao para limpar a entrada de operacao
+procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
+var
+  Index: integer;
+begin
+  if ClearEntryFlag = True then
+  begin
+    ClearEntryFlag := False;
+    Visualization.Text := '';
+    OperationList[OperationIndex] := '';
+    for Index := 0 to OperationIndex - 1 do
+    begin
+      Visualization.Text := Visualization.Text + OperationList[Index];
+    end;
+    OperationIndex -= 1;
+  end;
 end;
 
 procedure TCalculator.BackspaceButtonClick(Sender: TObject);
@@ -215,13 +294,14 @@ end;
 
 procedure TCalculator.DivisionButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  OperationIndex += 1;
-  OperationList[OperationIndex] := TemporaryNumber;
-  TemporaryNumber := '';
-  Visualization.Text := Visualization.Text + '/';
-  OperationIndex += 1;
-  OperationList[OperationIndex] := '/';
+  //OperationFlag := True;
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := TemporaryNumber;
+  //TemporaryNumber := '';
+  //Visualization.Text := Visualization.Text + '/';
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := '/';
+  EnviarOperacao('/');
 end;
 
 procedure TCalculator.DebugVisualizationChange(Sender: TObject);
@@ -239,24 +319,9 @@ begin
   EnviarNumeroLista('8');
 end;
 
-//Funcoes para realizar os calculos na FPU
-function SumFunction(FirstNumber, SecondNumber: real): real;
-var
-  Final: real;
-begin
-    {$asmmode intel}
-  asm
-           FINIT
-           FLD     FirstNumber
-           FLD     SecondNumber
-           FADD    ST,ST(1)
-           FSTP    Final
-  end;
-  SumFunction := Final;
-end;
+
 
 procedure TCalculator.EqualButtonClick(Sender: TObject);
-
 var
   Index: integer;
   TempString: string;
@@ -297,7 +362,25 @@ begin
           FirstNumberVisualization.Text := floattostr(TempNumberFirst);
           SecondNumberVisualization.Text := floattostr(TempNumberSecond);
           DebugVisualization.Text :=
-            floattostr(SumFunction(TempNumberFirst, TempNumberSecond));
+            floattostr(MinusFunction(TempNumberFirst, TempNumberSecond));
+        end;
+        '*': begin
+          Result := 0;
+          TempNumberFirst := strtofloat(OperationList[Index - 1]);
+          TempNumberSecond := strtofloat(OperationList[Index + 1]);
+          FirstNumberVisualization.Text := floattostr(TempNumberFirst);
+          SecondNumberVisualization.Text := floattostr(TempNumberSecond);
+          DebugVisualization.Text :=
+            floattostr(MulFunction(TempNumberFirst, TempNumberSecond));
+        end;
+        '/': begin
+          Result := 0;
+          TempNumberFirst := strtofloat(OperationList[Index - 1]);
+          TempNumberSecond := strtofloat(OperationList[Index + 1]);
+          FirstNumberVisualization.Text := floattostr(TempNumberFirst);
+          SecondNumberVisualization.Text := floattostr(TempNumberSecond);
+          DebugVisualization.Text :=
+            floattostr(DivFunction(TempNumberFirst, TempNumberSecond));
         end;
         else
       end;
@@ -380,24 +463,26 @@ end;
 
 procedure TCalculator.MinusButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  OperationIndex += 1;
-  OperationList[OperationIndex] := TemporaryNumber;
-  TemporaryNumber := '';
-  Visualization.Text := Visualization.Text + '-';
-  OperationIndex += 1;
-  OperationList[OperationIndex] := '-';
+  //OperationFlag := True;
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := TemporaryNumber;
+  //TemporaryNumber := '';
+  //Visualization.Text := Visualization.Text + '-';
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := '-';
+  EnviarOperacao('-');
 end;
 
 procedure TCalculator.MultiplicationButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  OperationIndex += 1;
-  OperationList[OperationIndex] := TemporaryNumber;
-  TemporaryNumber := '';
-  Visualization.Text := Visualization.Text + '*';
-  OperationIndex += 1;
-  OperationList[OperationIndex] := '*';
+  //OperationFlag := True;
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := TemporaryNumber;
+  //TemporaryNumber := '';
+  //Visualization.Text := Visualization.Text + '*';
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := '*';
+  EnviarOperacao('*');
 end;
 
 procedure TCalculator.Button9Click(Sender: TObject);
@@ -434,16 +519,17 @@ end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
 begin
-  //[Debug]
-  IndexDisplay.Text := floattostr(OperationIndex);
-  //[Debug]
-  OperationFlag := True;
-  OperationIndex += 1;
-  OperationList[OperationIndex] := TemporaryNumber;
-  TemporaryNumber := '';
-  Visualization.Text := Visualization.Text + '+';
-  OperationIndex += 1;
-  OperationList[OperationIndex] := '+';
+  ////[Debug]
+  //IndexDisplay.Text := floattostr(OperationIndex);
+  ////[Debug]
+  //OperationFlag := True;
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := TemporaryNumber;
+  //TemporaryNumber := '';
+  //Visualization.Text := Visualization.Text + '+';
+  //OperationIndex += 1;
+  //OperationList[OperationIndex] := '+';
+  EnviarOperacao('+');
 end;
 
 procedure TCalculator.PointButtonClick(Sender: TObject);
