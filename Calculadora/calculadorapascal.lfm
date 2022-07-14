@@ -1,11 +1,11 @@
 object Calculator: TCalculator
-  Left = 1740
+  Left = 598
   Height = 537
-  Top = 33
-  Width = 630
+  Top = 139
+  Width = 639
   Caption = 'Calculadora'
   ClientHeight = 537
-  ClientWidth = 630
+  ClientWidth = 639
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object DivisionButton: TButton
@@ -428,7 +428,7 @@ object Calculator: TCalculator
     Left = 488
     Height = 362
     Top = 80
-    Width = 112
+    Width = 136
     OnChange = ListaChange
     TabOrder = 47
   end

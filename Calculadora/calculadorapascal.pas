@@ -64,7 +64,7 @@ type
     procedure EnviarNumeroLista(Numero: string);
     procedure LimparZero();
     procedure ClearOperationFlag();
-    procedure EnviarOperacao(Operacao,Simbolo: string);
+    procedure EnviarOperacao(Operacao, Simbolo: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
@@ -223,7 +223,7 @@ begin
   end;
 end;
 
-procedure TCalculator.EnviarOperacao(Operacao,Simbolo: string);
+procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
   OperationFlag := True;
   ClearEntryFlag := True;
@@ -279,7 +279,7 @@ begin
   OperationFlag := False;
   for Index := 0 to IndexOperacao do
   begin
-    ListaEntrada[Index] := '0';
+    ListaEntrada[Index] := '';
   end;
   IndexOperacao := 0;
   Visualization.Text := FloatToStr(0);
@@ -299,9 +299,8 @@ procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
   OperationFlag := True;
   LimparZero();
-  //Visualization.Text := Visualization.Text + 'cos(';
-  EnviarOperacao('cos','cos');
-  EnviarOperacao('(','(');
+  EnviarOperacao('cos', 'cos');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.DegreeRadioChange(Sender: TObject);
@@ -311,14 +310,7 @@ end;
 
 procedure TCalculator.DivisionButtonClick(Sender: TObject);
 begin
-  //OperationFlag := True;
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := TemporaryNumber;
-  //TemporaryNumber := '';
-  //Visualization.Text := Visualization.Text + '/';
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := '/';
-  EnviarOperacao('/','/');
+  EnviarOperacao('/', '/');
 end;
 
 procedure TCalculator.DebugVisualizationChange(Sender: TObject);
@@ -357,46 +349,6 @@ begin
       //TempString := TempString + ListaEntrada[Index];
       Lista.Text := Lista.Text + '[' + IntToStr(Index) + ']' +
         ListaEntrada[Index] + sLineBreak;
-      //case ListaEntrada[Index] of
-      //  '+': begin
-      //    Result := 0;
-      //    //Pega o numero anterior e o proximo da lista com referencia no operador dentro do array
-      //    TempNumberFirst := strtofloat(ListaEntrada[Index - 1]);
-      //    TempNumberSecond := strtofloat(ListaEntrada[Index + 1]);
-      //    FirstNumberVisualization.Text := floattostr(TempNumberFirst);
-      //    SecondNumberVisualization.Text := floattostr(TempNumberSecond);
-      //    DebugVisualization.Text :=
-      //      floattostr(SumFunction(TempNumberFirst, TempNumberSecond));
-      //  end;
-      //  '-': begin
-      //    Result := 0;
-      //    TempNumberFirst := strtofloat(ListaEntrada[Index - 1]);
-      //    TempNumberSecond := strtofloat(ListaEntrada[Index + 1]);
-      //    FirstNumberVisualization.Text := floattostr(TempNumberFirst);
-      //    SecondNumberVisualization.Text := floattostr(TempNumberSecond);
-      //    DebugVisualization.Text :=
-      //      floattostr(MinusFunction(TempNumberFirst, TempNumberSecond));
-      //  end;
-      //  '*': begin
-      //    Result := 0;
-      //    TempNumberFirst := strtofloat(ListaEntrada[Index - 1]);
-      //    TempNumberSecond := strtofloat(ListaEntrada[Index + 1]);
-      //    FirstNumberVisualization.Text := floattostr(TempNumberFirst);
-      //    SecondNumberVisualization.Text := floattostr(TempNumberSecond);
-      //    DebugVisualization.Text :=
-      //      floattostr(MulFunction(TempNumberFirst, TempNumberSecond));
-      //  end;
-      //  '/': begin
-      //    Result := 0;
-      //    TempNumberFirst := strtofloat(ListaEntrada[Index - 1]);
-      //    TempNumberSecond := strtofloat(ListaEntrada[Index + 1]);
-      //    FirstNumberVisualization.Text := floattostr(TempNumberFirst);
-      //    SecondNumberVisualization.Text := floattostr(TempNumberSecond);
-      //    DebugVisualization.Text :=
-      //      floattostr(DivFunction(TempNumberFirst, TempNumberSecond));
-      //  end;
-      //  else
-      //end;
     end;
   end;
 end;
@@ -410,7 +362,7 @@ end;
 
 procedure TCalculator.FactorialButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('!','!');
+  EnviarOperacao('!', '!');
 end;
 
 procedure TCalculator.Button5Click(Sender: TObject);
@@ -441,14 +393,14 @@ end;
 
 procedure TCalculator.LnButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('ln','ln');
-  EnviarOperacao('(','(');
+  EnviarOperacao('ln', 'ln');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.LogButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('log','log');
-  EnviarOperacao('(','(');
+  EnviarOperacao('log', 'log');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.ListaChange(Sender: TObject);
@@ -480,26 +432,13 @@ end;
 
 procedure TCalculator.MinusButtonClick(Sender: TObject);
 begin
-  //OperationFlag := True;
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := TemporaryNumber;
-  //TemporaryNumber := '';
-  //Visualization.Text := Visualization.Text + '-';
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := '-';
-  EnviarOperacao('-','-');
+  EnviarOperacao('-', '-');
 end;
 
 procedure TCalculator.MultiplicationButtonClick(Sender: TObject);
 begin
-  //OperationFlag := True;
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := TemporaryNumber;
-  //TemporaryNumber := '';
-  //Visualization.Text := Visualization.Text + '*';
-  //IndexOperacao += 1;
-  //ListaEntrada[IndexOperacao] := '*';
-  EnviarOperacao('*','*');
+
+  EnviarOperacao('*', '*');
 end;
 
 procedure TCalculator.Button9Click(Sender: TObject);
@@ -520,13 +459,21 @@ begin
 end;
 
 procedure TCalculator.PiButtonClick(Sender: TObject);
+var
+  temp: real;
 begin
-  EnviarOperacao('pi','pi');
+  {$asmmode intel}
+  asm
+           FINIT
+           FLDPI
+           FSTP    temp
+  end;
+  EnviarNumeroLista(floattostr(temp));
 end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('+','+');
+  EnviarOperacao('+', '+');
 end;
 
 procedure TCalculator.PointButtonClick(Sender: TObject);
@@ -548,7 +495,7 @@ end;
 procedure TCalculator.RightParenthesisClick(Sender: TObject);
 begin
   LimparZero();
-  EnviarOperacao(')',')');
+  EnviarOperacao(')', ')');
 end;
 
 procedure TCalculator.Button7Click(Sender: TObject);
@@ -563,8 +510,8 @@ end;
 
 procedure TCalculator.SinButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sin','sin');
-  EnviarOperacao('(','(');
+  EnviarOperacao('sin', 'sin');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.Button6Click(Sender: TObject);
@@ -574,14 +521,14 @@ end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sqrt','sqrt');
-  EnviarOperacao('(','(');
+  EnviarOperacao('sqrt', 'sqrt');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
 begin
-    EnviarOperacao('tan','tan');
-  EnviarOperacao('(','(');
+  EnviarOperacao('tan', 'tan');
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.Button3Click(Sender: TObject);
@@ -607,17 +554,17 @@ end;
 
 procedure TCalculator.X2ButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sqr','²');
+  EnviarOperacao('sqr', '²');
 end;
 
 procedure TCalculator.XyButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('pow','^');
+  EnviarOperacao('pow', '^');
 end;
 
 procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('ysqrtx','√');
+  EnviarOperacao('ysqrtx', '√');
 end;
 
 procedure TCalculator.Button0Click(Sender: TObject);
