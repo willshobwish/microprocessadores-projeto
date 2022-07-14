@@ -1,11 +1,11 @@
 object Calculator: TCalculator
-  Left = 598
+  Left = 464
   Height = 537
-  Top = 139
-  Width = 639
+  Top = 345
+  Width = 798
   Caption = 'Calculadora'
   ClientHeight = 537
-  ClientWidth = 639
+  ClientWidth = 798
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object DivisionButton: TButton
@@ -424,12 +424,15 @@ object Calculator: TCalculator
     TabOrder = 46
     Text = 'Index'
   end
-  object Lista: TMemo
+  object ListaOperandos: TMemo
     Left = 488
     Height = 362
     Top = 80
     Width = 136
-    OnChange = ListaChange
+    Lines.Strings = (
+      'Números'
+    )
+    OnChange = ListaOperandosChange
     TabOrder = 47
   end
   object X2Button: TButton
@@ -440,5 +443,16 @@ object Calculator: TCalculator
     Caption = 'x²'
     OnClick = X2ButtonClick
     TabOrder = 25
+  end
+  object ListaOperadores: TMemo
+    Left = 632
+    Height = 361
+    Top = 81
+    Width = 136
+    Lines.Strings = (
+      'Operadores'
+    )
+    OnChange = ListaOperadoresChange
+    TabOrder = 48
   end
 end

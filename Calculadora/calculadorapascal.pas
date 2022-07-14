@@ -15,7 +15,8 @@ type
     DebugVisualization: TEdit;
     IndexDisplay: TEdit;
     FirstNumberVisualization: TEdit;
-    Lista: TMemo;
+    ListaOperandos: TMemo;
+    ListaOperadores: TMemo;
     SecondNumberVisualization: TEdit;
     RightParenthesis: TButton;
     LeftParenthesis: TButton;
@@ -83,9 +84,10 @@ type
     procedure Button4Click(Sender: TObject);
     procedure IndexDisplayChange(Sender: TObject);
     procedure LeftParenthesisClick(Sender: TObject);
+    procedure ListaOperadoresChange(Sender: TObject);
     procedure LnButtonClick(Sender: TObject);
     procedure LogButtonClick(Sender: TObject);
-    procedure ListaChange(Sender: TObject);
+    procedure ListaOperandosChange(Sender: TObject);
     procedure MemoryClearButtonClick(Sender: TObject);
     procedure MemoryPlusButtonClick(Sender: TObject);
     procedure MemoryRestoreButtonClick(Sender: TObject);
@@ -125,11 +127,10 @@ var
   TemporaryNumber: string;
   OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
   Division, Multiplication, ClearEntryFlag: boolean;
-  IndexOperacao, IndexPolonesa: integer;
-  //Lista de todas as operacoes que o usuario digitar
-  ListaEntrada: array[0..100] of string;//Lista 1
-  ListaPolonesa: array[0..100] of string;//Expressao polonesa
-//OperationList: array[0..100] of string;
+  IndexListaL1, IndexTemporariaPolonesa: integer;
+  //ListaOperandos de todas as operacoes que o usuario digitar
+  ListaL1: array[0..100] of string;//ListaOperandos 1
+  ListaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
 
 implementation
 
@@ -138,8 +139,8 @@ implementation
 { TCalculator }
 procedure Inicializacao();
 begin
-  IndexOperacao := 0;
-  IndexPolonesa := 100;
+  IndexListaL1 := 0;
+  IndexTemporariaPolonesa := 0;
 
 end;
 
@@ -227,21 +228,21 @@ procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
   OperationFlag := True;
   ClearEntryFlag := True;
-  //ListaPolonesa[IndexPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da lista polonesa
-  //IndexPolonesa -= 1;                                  //Diminui o indice da lista polonesa
+  //ListaTemporariaPolonesa[IndexTemporariaPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da ListaOperandos polonesa
+  //IndexTemporariaPolonesa -= 1;                                  //Diminui o indice da ListaOperandos polonesa
   //TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
   //Visualization.Text := Visualization.Text + Operacao;
-  //IndexOperacao -= 1;
+  //IndexListaL1 -= 1;
   if TemporaryNumber <> '' then
     //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
   begin
-    ListaEntrada[IndexOperacao] := TemporaryNumber;
+    ListaL1[IndexListaL1] := TemporaryNumber;
     TemporaryNumber := '';
-    IndexOperacao += 1;
+    IndexListaL1 += 1;
   end;
   Visualization.Text := Visualization.Text + Simbolo;
-  ListaEntrada[IndexOperacao] := Operacao;
-  IndexOperacao += 1;
+  ListaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
+  IndexTemporariaPolonesa += 1;
 end;
 
 //---Fim das procedures---
@@ -254,12 +255,12 @@ begin
   begin
     ClearEntryFlag := False;
     Visualization.Text := '';
-    ListaEntrada[IndexOperacao] := '';
-    for Index := 0 to IndexOperacao - 1 do
+    ListaL1[IndexListaL1] := '';
+    for Index := 0 to IndexListaL1 - 1 do
     begin
-      Visualization.Text := Visualization.Text + ListaEntrada[Index];
+      Visualization.Text := Visualization.Text + ListaL1[Index];
     end;
-    IndexOperacao -= 1;
+    IndexListaL1 -= 1;
   end;
 end;
 
@@ -277,12 +278,21 @@ begin
   DebugVisualization.Text := '0';
   //  [Debug]
   OperationFlag := False;
-  for Index := 0 to IndexOperacao do
+  for Index := 0 to IndexListaL1 do
   begin
-    ListaEntrada[Index] := '';
+    ListaL1[Index] := '';
   end;
-  IndexOperacao := 0;
-  Visualization.Text := FloatToStr(0);
+  for Index := 0 to IndexTemporariaPolonesa do
+  begin
+    ListaTemporariaPolonesa[Index] := '';
+  end;
+  IndexListaL1 := 0;
+  IndexTemporariaPolonesa := 0;
+  //[Debug]
+  ListaOperandos.Lines.Add('---Fim da operação---');
+  ListaOperadores.Lines.Add('---Fim da operação---');
+  //[Debug]
+  Visualization.Text := '0';
   MemoryCalculator := 0;
   FloatingPoint := False;
 end;
@@ -339,16 +349,19 @@ begin
   if OperationFlag = True then
   begin
     //Para contabilizar o ultimo numero que for inserido
-    ListaEntrada[IndexOperacao] := TemporaryNumber;
-    IndexOperacao += 1;
+    ListaL1[IndexListaL1] := TemporaryNumber;
+    IndexListaL1 += 1;
     TemporaryNumber := '';
     //Inicio da varredura do array de operacoes
-    for Index := 0 to IndexOperacao do
+    for Index := 0 to IndexTemporariaPolonesa do
     begin
-      //[Debug] Exibicao na visualizacao para testes
-      //TempString := TempString + ListaEntrada[Index];
-      Lista.Text := Lista.Text + '[' + IntToStr(Index) + ']' +
-        ListaEntrada[Index] + sLineBreak;
+      ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
+        ']' + ListaTemporariaPolonesa[Index] + sLineBreak;
+    end;
+    for Index := 0 to IndexListaL1 do
+    begin
+      ListaOperandos.Text :=
+        ListaOperandos.Text + '[' + IntToStr(Index) + ']' + ListaL1[Index] + sLineBreak;
     end;
   end;
 end;
@@ -391,6 +404,11 @@ begin
   Visualization.Text := Visualization.Text + '(';
 end;
 
+procedure TCalculator.ListaOperadoresChange(Sender: TObject);
+begin
+
+end;
+
 procedure TCalculator.LnButtonClick(Sender: TObject);
 begin
   EnviarOperacao('ln', 'ln');
@@ -403,7 +421,7 @@ begin
   EnviarOperacao('(', '(');
 end;
 
-procedure TCalculator.ListaChange(Sender: TObject);
+procedure TCalculator.ListaOperandosChange(Sender: TObject);
 begin
 
 end;
@@ -547,6 +565,8 @@ begin
 end;
 
 procedure TCalculator.VisualizationChange(Sender: TObject);
+var
+  Index: integer;
 begin
 
 end;
