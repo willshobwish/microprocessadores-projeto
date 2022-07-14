@@ -1,7 +1,7 @@
 object Calculator: TCalculator
-  Left = 0
+  Left = 1740
   Height = 537
-  Top = 152
+  Top = 33
   Width = 630
   Caption = 'Calculadora'
   ClientHeight = 537
@@ -424,15 +424,12 @@ object Calculator: TCalculator
     TabOrder = 46
     Text = 'Index'
   end
-  object Memo1: TMemo
+  object Lista: TMemo
     Left = 488
     Height = 362
     Top = 80
     Width = 112
-    Lines.Strings = (
-      'Memo1'
-    )
-    OnChange = Memo1Change
+    OnChange = ListaChange
     TabOrder = 47
   end
   object X2Button: TButton
