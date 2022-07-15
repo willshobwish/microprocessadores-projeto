@@ -540,6 +540,7 @@ end;
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 begin
   EnviarOperacao('sqrt', 'sqrt');
+  EnviarOperacao('sqrt', '√');
   EnviarOperacao('(', '(');
 end;
 
