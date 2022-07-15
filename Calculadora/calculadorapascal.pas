@@ -224,8 +224,30 @@ begin
     '!': Exit(True);
     'e^': Exit(True);
   end;
+  Exit(False);
 end;
 
+function OrdemProcedencia(Operador: string): integer;
+//Funcao retorna a ordem de procedencia de cada operacao
+begin
+  case Operador of
+    '+': Exit(1);
+    '-': Exit(1);
+    '/': Exit(2);
+    '*': Exit(3);
+    'sqr': Exit(4);
+    'pow': Exit(4);
+    'ysqrtx': Exit(4);
+    'tan': Exit(True);
+    'cos': Exit(True);
+    'sin': Exit(True);
+    'ln': Exit(True);
+    'log': Exit(True);
+    '!': Exit(True);
+    'e^': Exit(True);
+  end;
+  Exit(False);
+end;
 //---Fim das funcoes---
 //---Inicio das procedures---
 procedure TCalculator.ClearOperationFlag();
