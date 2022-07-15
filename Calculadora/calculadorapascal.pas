@@ -371,6 +371,7 @@ begin
   OperationFlag := True;
   LimparZero();
   Visualization.Text := Visualization.Text + 'e^';
+  EnviarOperacao('e^', 'e^');
 end;
 
 procedure TCalculator.FactorialButtonClick(Sender: TObject);
