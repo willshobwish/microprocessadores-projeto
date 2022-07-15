@@ -205,6 +205,27 @@ begin
   end;
   DivFunction := Final;
 end;
+
+function ValidaOperador(Operador: string): boolean;
+begin
+  case Operador of
+    '+': Exit(True);
+    '-': Exit(True);
+    '/': Exit(True);
+    '*': Exit(True);
+    'sqr': Exit(True);
+    'pow': Exit(True);
+    'ysqrtx': Exit(True);
+    'tan': Exit(True);
+    'cos': Exit(True);
+    'sin': Exit(True);
+    'ln': Exit(True);
+    'log': Exit(True);
+    '!': Exit(True);
+    'e^': Exit(True);
+  end;
+end;
+
 //---Fim das funcoes---
 //---Inicio das procedures---
 procedure TCalculator.ClearOperationFlag();
@@ -368,9 +389,6 @@ end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  LimparZero();
-  Visualization.Text := Visualization.Text + 'e^';
   EnviarOperacao('e^', 'e^');
 end;
 
@@ -540,7 +558,6 @@ end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sqrt', 'sqrt');
   EnviarOperacao('sqrt', '√');
   EnviarOperacao('(', '(');
 end;
