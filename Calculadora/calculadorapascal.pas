@@ -65,6 +65,7 @@ type
     procedure EnviarNumeroLista(Numero: string);
     procedure LimparZero();
     procedure ClearOperationFlag();
+    procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
@@ -129,8 +130,9 @@ var
   Division, Multiplication, ClearEntryFlag: boolean;
   IndexListaL1, IndexTemporariaPolonesa: integer;
   //ListaOperandos de todas as operacoes que o usuario digitar
-  ListaL1: array[0..100] of string;//ListaOperandos 1
-  ListaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
+  PilhaL1: array[0..100] of string;//ListaOperandos 1
+  PilhaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
+  PilhaCalculo: array[0..100] of string;
 
 implementation
 
@@ -228,7 +230,7 @@ begin
 end;
 
 function OrdemProcedencia(Operador: string): integer;
-//Funcao retorna a ordem de procedencia de cada operacao
+  //Funcao retorna a ordem de procedencia de cada operacao
 begin
   case Operador of
     '+': Exit(1);
@@ -238,18 +240,34 @@ begin
     'sqr': Exit(4);
     'pow': Exit(4);
     'ysqrtx': Exit(4);
-    'tan': Exit(True);
-    'cos': Exit(True);
-    'sin': Exit(True);
-    'ln': Exit(True);
-    'log': Exit(True);
-    '!': Exit(True);
-    'e^': Exit(True);
+    'tan': Exit(4);
+    'cos': Exit(4);
+    'sin': Exit(4);
+    'ln': Exit(5);
+    'log': Exit(5);
+    '!': Exit(5);
+    'e^': Exit(5);
   end;
-  Exit(False);
+  Exit(0);
 end;
 //---Fim das funcoes---
 //---Inicio das procedures---
+procedure TCalculator.Debug();
+var
+  Index: integer;
+begin
+  for Index := 0 to IndexTemporariaPolonesa do
+  begin
+    ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
+      ']' + PilhaTemporariaPolonesa[Index] + sLineBreak;
+  end;
+  for Index := 0 to IndexListaL1 do
+  begin
+    ListaOperandos.Text :=
+      ListaOperandos.Text + '[' + IntToStr(Index) + ']' + PilhaL1[Index] + sLineBreak;
+  end;
+end;
+
 procedure TCalculator.ClearOperationFlag();
 begin
   Sum := False;
@@ -271,7 +289,7 @@ procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
   OperationFlag := True;
   ClearEntryFlag := True;
-  //ListaTemporariaPolonesa[IndexTemporariaPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da ListaOperandos polonesa
+  //PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da ListaOperandos polonesa
   //IndexTemporariaPolonesa -= 1;                                  //Diminui o indice da ListaOperandos polonesa
   //TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
   //Visualization.Text := Visualization.Text + Operacao;
@@ -279,12 +297,12 @@ begin
   if TemporaryNumber <> '' then
     //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
   begin
-    ListaL1[IndexListaL1] := TemporaryNumber;
+    PilhaL1[IndexListaL1] := TemporaryNumber;
     TemporaryNumber := '';
     IndexListaL1 += 1;
   end;
   Visualization.Text := Visualization.Text + Simbolo;
-  ListaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
+  PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
   IndexTemporariaPolonesa += 1;
 end;
 
@@ -298,10 +316,10 @@ begin
   begin
     ClearEntryFlag := False;
     Visualization.Text := '';
-    ListaL1[IndexListaL1] := '';
+    PilhaL1[IndexListaL1] := '';
     for Index := 0 to IndexListaL1 - 1 do
     begin
-      Visualization.Text := Visualization.Text + ListaL1[Index];
+      Visualization.Text := Visualization.Text + PilhaL1[Index];
     end;
     IndexListaL1 -= 1;
   end;
@@ -323,11 +341,11 @@ begin
   OperationFlag := False;
   for Index := 0 to IndexListaL1 do
   begin
-    ListaL1[Index] := '';
+    PilhaL1[Index] := '';
   end;
   for Index := 0 to IndexTemporariaPolonesa do
   begin
-    ListaTemporariaPolonesa[Index] := '';
+    PilhaTemporariaPolonesa[Index] := '';
   end;
   IndexListaL1 := 0;
   IndexTemporariaPolonesa := 0;
@@ -392,20 +410,12 @@ begin
   if OperationFlag = True then
   begin
     //Para contabilizar o ultimo numero que for inserido
-    ListaL1[IndexListaL1] := TemporaryNumber;
+    PilhaL1[IndexListaL1] := TemporaryNumber;
     IndexListaL1 += 1;
     TemporaryNumber := '';
     //Inicio da varredura do array de operacoes
-    for Index := 0 to IndexTemporariaPolonesa do
-    begin
-      ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
-        ']' + ListaTemporariaPolonesa[Index] + sLineBreak;
-    end;
-    for Index := 0 to IndexListaL1 do
-    begin
-      ListaOperandos.Text :=
-        ListaOperandos.Text + '[' + IntToStr(Index) + ']' + ListaL1[Index] + sLineBreak;
-    end;
+
+    Debug();
   end;
 end;
 
@@ -512,9 +522,7 @@ end;
 
 procedure TCalculator.OneXButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  LimparZero();
-  Visualization.Text := Visualization.Text + '1/';
+  EnviarOperacao('1/x', '1/');
 end;
 
 procedure TCalculator.PiButtonClick(Sender: TObject);
