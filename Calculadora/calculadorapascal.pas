@@ -27,7 +27,7 @@ type
     Button8: TButton;
     Button5: TButton;
     Button2: TButton;
-    PointButton: TButton;
+    PontoButton: TButton;
     SignalButton: TButton;
     Button7: TButton;
     Button4: TButton;
@@ -61,7 +61,7 @@ type
     InverseCheck: TCheckBox;
     DegreeRadio: TRadioButton;
     RadianRadio: TRadioButton;
-    Visualization: TEdit;
+    Visor: TEdit;
     //---Procedimentos criados para o projeto---
     procedure EnviarNumeroLista(Numero: string);
     procedure LimparZero();
@@ -105,7 +105,7 @@ type
     procedure OneXButtonClick(Sender: TObject);
     procedure PiButtonClick(Sender: TObject);
     procedure PlusButtonClick(Sender: TObject);
-    procedure PointButtonClick(Sender: TObject);
+    procedure PontoButtonClick(Sender: TObject);
     procedure RadianRadioChange(Sender: TObject);
     procedure RightParenthesisClick(Sender: TObject);
     procedure Button7Click(Sender: TObject);
@@ -117,7 +117,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure InverseCheckChange(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure VisualizationChange(Sender: TObject);
+    procedure VisorChange(Sender: TObject);
     procedure SqrButtonClick(Sender: TObject);
     procedure XyButtonClick(Sender: TObject);
     procedure YsqrtxButtonClick(Sender: TObject);
@@ -228,11 +228,16 @@ var
 begin
   if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
     (Operacao = '/') or (Operacao = '^')) then
+    //    Checa se a operacao necessita de dois operandos
   begin
     FirstNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    //    Pega o primeiro numero de baixo para cima
     IndexPilhaCalculo -= 1;
+    //    Remove um do indice para apontar para o "proximo"
     SecondNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    //    Pega o segundo numero de baixo para cima
     IndexPilhaCalculo -= 1;
+    //    Remove um do indice para apontar para o "proximo"
     case Operacao of
       '+': begin
      {$asmmode intel}
@@ -304,7 +309,7 @@ var
 begin
   MaxDelete := Length(TemporaryNumber);
   //  Determina o quanto que pode ser apagado
-  Temp := Visualization.Text;
+  Temp := Visor.Text;
   //  A variavel temporaria recebe o que esta escrito no visor
   Delete(TemporaryNumber, Length(TemporaryNumber), 1);
   //  Funcao que apaga uma parte do string
@@ -313,7 +318,7 @@ begin
   begin
     //    Caso o tamanho da string do numero seja maior que zero, ele apagara e atualizara o visor
     Delete(Temp, Length(TemporaryNumber), 1);
-    Visualization.Text := Temp;
+    Visor.Text := Temp;
   end;
 end;
 
@@ -325,9 +330,9 @@ begin
   //  Checa se foi inserido uma operacao para ser apagado
   if ClearEntryFlag = True then
   begin
-    Temp := Visualization.Text;
+    Temp := Visor.Text;
     Delete(Temp, Length(Temp), 1);
-    Visualization.Text := Temp;
+    Visor.Text := Temp;
     PilhaTemporariaPolonesa[IndexTemporariaPolonesa - 1] := '';
     ClearEntryFlag := False;
   end;
@@ -344,15 +349,15 @@ end;
 procedure TCalculator.LimparZero();
 // Metodo para checar se ha zero no visor e substituir com a primeira operacao ou numero que o usuario digitar
 begin
-  if Visualization.Text = '0' then
+  if Visor.Text = '0' then
   begin
-    Visualization.Text := '';
+    Visor.Text := '';
   end;
 end;
 
 procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
-  LimparZero();
+  FloatingPoint := False;
   //  Verifica se ha zeros no visor da calculadora
   OperationFlag := True;
   //  Indica que foi enviado uma operacao e que eh possivel executar o sinal de igual
@@ -366,7 +371,7 @@ begin
     IndexListaL1 += 1;
   end;
   PilhaTemporariaParaL1(Operacao);
-  Visualization.Text := Visualization.Text + Simbolo;
+  Visor.Text := Visor.Text + Simbolo;
   PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
   IndexTemporariaPolonesa += 1;
   Debug();
@@ -421,7 +426,7 @@ begin
   ListaOperandos.Lines.Add('---Fim da operação---');
   ListaOperadores.Lines.Add('---Fim da operação---');
   //[Debug]
-  Visualization.Text := '0';
+  Visor.Text := '';
   MemoryCalculator := 0;
   FloatingPoint := False;
   ProcedenciaAtual := 0;
@@ -431,7 +436,7 @@ end;
 procedure TCalculator.EnviarNumeroLista(Numero: string);
 begin
   LimparZero();
-  Visualization.Text := Visualization.Text + Numero;
+  Visor.Text := Visor.Text + Numero;
   TemporaryNumber := TemporaryNumber + Numero;
 end;
 
@@ -556,7 +561,7 @@ end;
 procedure TCalculator.MemoryRestoreButtonClick(Sender: TObject);
 begin
   MemoryCalculator := MemoryStore;
-  Visualization.Text := floattostr(MemoryCalculator);
+  Visor.Text := floattostr(MemoryCalculator);
 end;
 
 procedure TCalculator.MemoryStoreButtonClick(Sender: TObject);
@@ -609,12 +614,12 @@ begin
   EnviarOperacao('+', '+');
 end;
 
-procedure TCalculator.PointButtonClick(Sender: TObject);
+procedure TCalculator.PontoButtonClick(Sender: TObject);
 begin
   if (FloatingPoint = False) then
   begin
-    Visualization.Text := Visualization.Text + ',';
-    MemoryCalculator := strtofloat(Visualization.Text);
+    Visor.Text := Visor.Text + '.';
+    TemporaryNumber := TemporaryNumber + '.';
     FloatingPoint := True;
   end;
 
@@ -679,7 +684,7 @@ begin
   EnviarNumeroLista('2');
 end;
 
-procedure TCalculator.VisualizationChange(Sender: TObject);
+procedure TCalculator.VisorChange(Sender: TObject);
 var
   Index: integer;
 begin
@@ -704,7 +709,7 @@ end;
 
 procedure TCalculator.Button0Click(Sender: TObject);
 begin
-  if Visualization.Text <> '0' then
+  if Visor.Text <> '0' then
   begin
     EnviarNumeroLista('0');
   end;

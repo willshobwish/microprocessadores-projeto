@@ -116,13 +116,13 @@ object Calculator: TCalculator
     OnClick = Button5Click
     TabOrder = 12
   end
-  object PointButton: TButton
+  object PontoButton: TButton
     Left = 264
     Height = 50
     Top = 360
     Width = 50
-    Caption = ','
-    OnClick = PointButtonClick
+    Caption = '.'
+    OnClick = PontoButtonClick
     TabOrder = 7
   end
   object Button7: TButton
@@ -161,15 +161,14 @@ object Calculator: TCalculator
     OnClick = Button0Click
     TabOrder = 17
   end
-  object Visualization: TEdit
+  object Visor: TEdit
     Left = 40
     Height = 23
     Top = 24
     Width = 440
     Alignment = taRightJustify
-    OnChange = VisualizationChange
+    OnChange = VisorChange
     TabOrder = 18
-    Text = '0'
   end
   object DegreeRadio: TRadioButton
     Left = 104
