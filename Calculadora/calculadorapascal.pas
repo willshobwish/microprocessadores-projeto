@@ -67,6 +67,7 @@ type
     procedure ClearOperationFlag();
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
+    procedure Calculo(Operacao: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
@@ -148,65 +149,7 @@ end;
 
 //---Inicio de criacao de funcoes para o projeto---
 //Funcoes para realizar os calculos na FPU
-function SumFunction(FirstNumber, SecondNumber: real): real;
-var
-  Final: real;
-begin
-    {$asmmode intel}
-  asm
-           FINIT
-           FLD     FirstNumber
-           FLD     SecondNumber
-           FADD    ST,ST(1)
-           FSTP    Final
-  end;
-  SumFunction := Final;
-end;
 
-function MinusFunction(FirstNumber, SecondNumber: real): real;
-var
-  Final: real;
-begin
-    {$asmmode intel}
-  asm
-           FINIT
-           FLD     SecondNumber
-           FLD     FirstNumber
-           FSUB    ST,ST(1)
-           FSTP    Final
-  end;
-  MinusFunction := Final;
-end;
-
-function MulFunction(FirstNumber, SecondNumber: real): real;
-var
-  Final: real;
-begin
-    {$asmmode intel}
-  asm
-           FINIT
-           FLD     FirstNumber
-           FLD     SecondNumber
-           FMUL    ST,ST(1)
-           FSTP    Final
-  end;
-  MulFunction := Final;
-end;
-
-function DivFunction(FirstNumber, SecondNumber: real): real;
-var
-  Final: real;
-begin
-    {$asmmode intel}
-  asm
-           FINIT
-           FLD     SecondNumber
-           FLD     FirstNumber
-           FDIV    ST,ST(1)
-           FSTP    Final
-  end;
-  DivFunction := Final;
-end;
 
 function ValidaOperador(Operador: string): boolean;
 begin
@@ -255,6 +198,7 @@ end;
 //---Fim das funcoes---
 //---Inicio das procedures---
 procedure TCalculator.Debug();
+//Procedimento para visualizacao da lista
 var
   Index: integer;
 begin
@@ -267,6 +211,119 @@ begin
   begin
     ListaOperandos.Text :=
       ListaOperandos.Text + '[' + IntToStr(Index) + ']' + PilhaL1[Index] + sLineBreak;
+  end;
+  ListaOperadores.Lines.Add('------');
+  ListaOperandos.Lines.Add('------');
+end;
+
+procedure TCalculator.Calculo(Operacao: string);
+var
+  FirstNumber, SecondNumber, Resultado: real;
+begin
+  if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
+    (Operacao = '/') or (Operacao = '^')) then
+  begin
+    FirstNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    IndexPilhaCalculo -= 1;
+    SecondNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    IndexPilhaCalculo -= 1;
+    case Operacao of
+      '+': begin
+     {$asmmode intel}
+        asm
+                 FINIT
+                 FLD   FirstNumber
+                 FLD   SecondNumber
+                 FADD  ST,ST(1)
+                 FSTP  Resultado
+        end;
+      end;
+      '-': begin
+     {$asmmode intel}
+        asm
+                 FINIT
+                 FLD   FirstNumber
+                 FLD   SecondNumber
+                 FSUBR ST,ST(1)
+                 FSTP  Resultado
+        end;
+      end;
+      '*': begin
+      {$asmmode intel}
+        asm
+                 FINIT
+                 FLD   FirstNumber
+                 FLD   SecondNumber
+                 FMUL  ST,ST(1)
+                 FSTP  Resultado
+        end;
+      end;
+      '/': begin
+      {$asmmode intel}
+        asm
+                 FINIT
+                 FLD   FirstNumber
+                 FLD   SecondNumber
+                 FDIVR ST,ST(1)
+                 FSTP  Resultado
+        end;
+      end;
+      '^': begin
+      {$asmmode intel}
+        asm
+                 FINIT
+                 FLD     FirstNumber
+                 FLD     SecondNumber
+                 FYL2X
+                 FLD     ST
+                 FRNDINT
+                 FSUB    ST(1),ST
+                 FXCH
+                 F2XM1
+                 FLD1
+                 FADD
+                 FSCALE
+                 FSTP    Resultado
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TCalculator.Backspace();
+//Procedimento que apaga o que foi escrito, apaga somente o ultimo numero que foi inserido
+var
+  Temp: string;
+  MaxDelete, Index: integer;
+begin
+  MaxDelete := Length(TemporaryNumber);
+  //  Determina o quanto que pode ser apagado
+  Temp := Visualization.Text;
+  //  A variavel temporaria recebe o que esta escrito no visor
+  Delete(TemporaryNumber, Length(TemporaryNumber), 1);
+  //  Funcao que apaga uma parte do string
+  if MaxDelete > 0 then
+    //  Delimita o quanto que pode ser apagado do visor da calculadora
+  begin
+    //    Caso o tamanho da string do numero seja maior que zero, ele apagara e atualizara o visor
+    Delete(Temp, Length(TemporaryNumber), 1);
+    Visualization.Text := Temp;
+  end;
+end;
+
+procedure TCalculator.ClearEntry();
+//Procedimento que apaga a entrada de operacao
+var
+  Temp: string;
+begin
+  //  Checa se foi inserido uma operacao para ser apagado
+  if ClearEntryFlag = True then
+  begin
+    Temp := Visualization.Text;
+    Delete(Temp, Length(Temp), 1);
+    Visualization.Text := Temp;
+    PilhaTemporariaPolonesa[IndexTemporariaPolonesa - 1] := '';
+    ClearEntryFlag := False;
   end;
 end;
 
