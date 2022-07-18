@@ -68,6 +68,7 @@ type
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     procedure ClearEntry();
+    procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
@@ -361,9 +362,25 @@ begin
     TemporaryNumber := '';
     IndexListaL1 += 1;
   end;
+  PilhaTemporariaParaL1(Operacao);
   Visualization.Text := Visualization.Text + Simbolo;
   PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
   IndexTemporariaPolonesa += 1;
+  Debug();
+end;
+
+procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
+begin
+  if OrdemProcedencia(Operador) >= ProcedenciaAtual then
+  begin
+    PilhaL1[IndexListaL1] := Operador;
+    IndexListaL1 += 1;
+    ProcedenciaAtual := OrdemProcedencia(Operador);
+  end
+  else
+  begin
+
+  end;
 end;
 
 //---Fim das procedures---
