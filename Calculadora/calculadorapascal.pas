@@ -67,6 +67,7 @@ type
     procedure ClearOperationFlag();
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
+    procedure Backspace();
     procedure ClearEntry();
     procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
@@ -132,6 +133,7 @@ var
   OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
   Division, Multiplication, ClearEntryFlag: boolean;
   IndexListaL1, IndexTemporariaPolonesa: integer;
+  IndexListaL1, IndexTemporariaPolonesa, IndexPilhaCalculo, IndexBackspace,
   //ListaOperandos de todas as operacoes que o usuario digitar
   PilhaL1: array[0..100] of string;//ListaOperandos 1
   PilhaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
@@ -147,6 +149,7 @@ begin
   IndexListaL1 := 0;
   IndexTemporariaPolonesa := 0;
 
+  IndexBackspace := 0;
 end;
 
 //---Inicio de criacao de funcoes para o projeto---
@@ -394,6 +397,7 @@ procedure TCalculator.BackspaceButtonClick(Sender: TObject);
 // Botao para apagar um digito ou operacao, ele verifica qual numero ou operacao que esta no array e apaga
 begin
 
+  Backspace();
 end;
 
 procedure TCalculator.ClearButtonClick(Sender: TObject);
