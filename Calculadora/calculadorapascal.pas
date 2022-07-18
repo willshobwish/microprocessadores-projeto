@@ -132,8 +132,8 @@ var
   TemporaryNumber: string;
   OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
   Division, Multiplication, ClearEntryFlag: boolean;
-  IndexListaL1, IndexTemporariaPolonesa: integer;
   IndexListaL1, IndexTemporariaPolonesa, IndexPilhaCalculo, IndexBackspace,
+  ProcedenciaAtual: integer;
   //ListaOperandos de todas as operacoes que o usuario digitar
   PilhaL1: array[0..100] of string;//ListaOperandos 1
   PilhaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
@@ -150,6 +150,7 @@ begin
   IndexTemporariaPolonesa := 0;
 
   IndexBackspace := 0;
+  ProcedenciaAtual := 0;
 end;
 
 //---Inicio de criacao de funcoes para o projeto---
@@ -425,6 +426,7 @@ begin
   Visualization.Text := '0';
   MemoryCalculator := 0;
   FloatingPoint := False;
+  ProcedenciaAtual := 0;
 end;
 
 //Enviar o numero para a visualizacao e variavel temporaria que armazena o numero
