@@ -148,7 +148,6 @@ procedure Inicializacao();
 begin
   IndexListaL1 := 0;
   IndexTemporariaPolonesa := 0;
-
   IndexBackspace := 0;
   ProcedenciaAtual := 0;
 end;
@@ -356,11 +355,6 @@ begin
   OperationFlag := True;
   //  Indica que foi enviado uma operacao e que eh possivel executar o sinal de igual
   ClearEntryFlag := True;
-  //PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := TemporaryNumber;     //Pega o numero da visualizacao e coloca no final da ListaOperandos polonesa
-  //IndexTemporariaPolonesa -= 1;                                  //Diminui o indice da ListaOperandos polonesa
-  //TemporaryNumber := '';                               //Substitui o valor da variavel temporaria
-  //Visualization.Text := Visualization.Text + Operacao;
-  //IndexListaL1 -= 1;
   //  Indica que foi enviado uma operacao e que eh possivel apagar a operacao
   if TemporaryNumber <> '' then
     //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
@@ -400,7 +394,6 @@ end;
 procedure TCalculator.BackspaceButtonClick(Sender: TObject);
 // Botao para apagar um digito ou operacao, ele verifica qual numero ou operacao que esta no array e apaga
 begin
-
   Backspace();
 end;
 
