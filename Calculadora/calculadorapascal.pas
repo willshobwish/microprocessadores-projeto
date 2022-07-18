@@ -455,7 +455,7 @@ var
   TempNumberFirst, TempNumberSecond, Result: real;
 begin
   //A calculadora funcionara somente se alguma operacao for acionada
-  if OperationFlag = True then
+  if (OperationFlag = True) and (TemporaryNumber <> '') then
   begin
     //Para contabilizar o ultimo numero que for inserido
     PilhaL1[IndexListaL1] := TemporaryNumber;
