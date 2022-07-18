@@ -38,7 +38,7 @@ type
     TanButton: TButton;
     CosButton: TButton;
     SqrtxButton: TButton;
-    X2Button: TButton;
+    SqrButton: TButton;
     XyButton: TButton;
     ExButton: TButton;
     SinButton: TButton;
@@ -113,7 +113,7 @@ type
     procedure InverseCheckChange(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure VisualizationChange(Sender: TObject);
-    procedure X2ButtonClick(Sender: TObject);
+    procedure SqrButtonClick(Sender: TObject);
     procedure XyButtonClick(Sender: TObject);
     procedure YsqrtxButtonClick(Sender: TObject);
     procedure Button0Click(Sender: TObject);
@@ -622,7 +622,7 @@ begin
 end;
 
 
-procedure TCalculator.X2ButtonClick(Sender: TObject);
+procedure TCalculator.SqrButtonClick(Sender: TObject);
 begin
   EnviarOperacao('sqr', '²');
 end;
