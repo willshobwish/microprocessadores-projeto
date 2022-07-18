@@ -67,6 +67,7 @@ type
     procedure ClearOperationFlag();
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
+    procedure ClearEntry();
     procedure Calculo(Operacao: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
@@ -368,20 +369,8 @@ end;
 //---Fim das procedures---
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
 // Botao para limpar a entrada de operacao
-var
-  Index: integer;
 begin
-  if ClearEntryFlag = True then
-  begin
-    ClearEntryFlag := False;
-    Visualization.Text := '';
-    PilhaL1[IndexListaL1] := '';
-    for Index := 0 to IndexListaL1 - 1 do
-    begin
-      Visualization.Text := Visualization.Text + PilhaL1[Index];
-    end;
-    IndexListaL1 -= 1;
-  end;
+  ClearEntry();
 end;
 
 procedure TCalculator.BackspaceButtonClick(Sender: TObject);
