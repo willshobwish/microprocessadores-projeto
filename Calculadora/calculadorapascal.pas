@@ -452,8 +452,7 @@ end;
 
 procedure TCalculator.LeftParenthesisClick(Sender: TObject);
 begin
-  LimparZero();
-  Visualization.Text := Visualization.Text + '(';
+  EnviarOperacao('(', '(');
 end;
 
 procedure TCalculator.ListaOperadoresChange(Sender: TObject);
