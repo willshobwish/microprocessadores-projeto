@@ -416,8 +416,8 @@ begin
     TemporaryNumber := '';
     //Inicio da varredura do array de operacoes
 
-    Debug();
   end;
+  Debug();
 end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
