@@ -573,7 +573,7 @@ end;
 
 procedure TCalculator.SignalButtonClick(Sender: TObject);
 begin
-
+  EnviarOperacao('~', '-');
 end;
 
 procedure TCalculator.SinButtonClick(Sender: TObject);
