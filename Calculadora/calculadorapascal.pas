@@ -352,6 +352,7 @@ end;
 
 procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
+  LimparZero();
   //  Verifica se ha zeros no visor da calculadora
   OperationFlag := True;
   //  Indica que foi enviado uma operacao e que eh possivel executar o sinal de igual
