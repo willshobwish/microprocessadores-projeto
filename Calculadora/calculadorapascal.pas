@@ -17,6 +17,7 @@ type
     FirstNumberVisualization: TEdit;
     ListaOperandos: TMemo;
     ListaOperadores: TMemo;
+    ListaCalculo: TMemo;
     SecondNumberVisualization: TEdit;
     RightParenthesis: TButton;
     LeftParenthesis: TButton;
