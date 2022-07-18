@@ -233,20 +233,21 @@ function OrdemProcedencia(Operador: string): integer;
   //Funcao retorna a ordem de procedencia de cada operacao
 begin
   case Operador of
-    '+': Exit(1);
-    '-': Exit(1);
-    '/': Exit(2);
+    '+': Exit(2);
+    '-': Exit(2);
+    '/': Exit(3);
     '*': Exit(3);
     'sqr': Exit(4);
     'pow': Exit(4);
     'ysqrtx': Exit(4);
-    'tan': Exit(4);
-    'cos': Exit(4);
-    'sin': Exit(4);
-    'ln': Exit(5);
-    'log': Exit(5);
-    '!': Exit(5);
-    'e^': Exit(5);
+    'ln': Exit(4);
+    'log': Exit(4);
+    '!': Exit(4);
+    'e^': Exit(4);
+    'tan': Exit(5);
+    'cos': Exit(5);
+    'sin': Exit(5);
+    '~': Exit(6);
   end;
   Exit(0);
 end;
