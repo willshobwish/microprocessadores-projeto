@@ -1,11 +1,11 @@
 object Calculator: TCalculator
-  Left = 692
+  Left = 330
   Height = 537
-  Top = 307
-  Width = 798
+  Top = 352
+  Width = 955
   Caption = 'Calculadora'
   ClientHeight = 537
-  ClientWidth = 798
+  ClientWidth = 955
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object DivisionButton: TButton
@@ -60,7 +60,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '9'
     OnClick = Button9Click
-    TabOrder = 5
+    TabOrder = 8
   end
   object Button6: TButton
     Left = 264
@@ -69,7 +69,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '6'
     OnClick = Button6Click
-    TabOrder = 6
+    TabOrder = 11
   end
   object Button3: TButton
     Left = 264
@@ -78,7 +78,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '3'
     OnClick = Button3Click
-    TabOrder = 7
+    TabOrder = 14
   end
   object EqualButton: TButton
     Left = 376
@@ -87,7 +87,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '='
     OnClick = EqualButtonClick
-    TabOrder = 8
+    TabOrder = 5
   end
   object BackspaceButton: TButton
     Left = 153
@@ -96,7 +96,7 @@ object Calculator: TCalculator
     Width = 106
     Caption = 'Backspace'
     OnClick = BackspaceButtonClick
-    TabOrder = 9
+    TabOrder = 6
   end
   object Button8: TButton
     Left = 208
@@ -105,7 +105,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '8'
     OnClick = Button8Click
-    TabOrder = 10
+    TabOrder = 9
   end
   object Button5: TButton
     Left = 208
@@ -114,7 +114,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '5'
     OnClick = Button5Click
-    TabOrder = 11
+    TabOrder = 12
   end
   object PointButton: TButton
     Left = 264
@@ -123,7 +123,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = ','
     OnClick = PointButtonClick
-    TabOrder = 13
+    TabOrder = 7
   end
   object Button7: TButton
     Left = 153
@@ -132,7 +132,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '7'
     OnClick = Button7Click
-    TabOrder = 14
+    TabOrder = 10
   end
   object Button2: TButton
     Left = 208
@@ -141,7 +141,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '2'
     OnClick = Button2Click
-    TabOrder = 12
+    TabOrder = 15
   end
   object Button1: TButton
     Left = 152
@@ -405,7 +405,7 @@ object Calculator: TCalculator
     Width = 50
     Caption = '4'
     OnClick = Button4Click
-    TabOrder = 15
+    TabOrder = 13
   end
   object SecondNumberVisualization: TEdit
     Left = 40
@@ -435,13 +435,13 @@ object Calculator: TCalculator
     OnChange = ListaOperandosChange
     TabOrder = 47
   end
-  object X2Button: TButton
+  object SqrButton: TButton
     Left = 432
     Height = 50
     Top = 248
     Width = 50
     Caption = 'x²'
-    OnClick = X2ButtonClick
+    OnClick = SqrButtonClick
     TabOrder = 25
   end
   object ListaOperadores: TMemo
@@ -454,5 +454,15 @@ object Calculator: TCalculator
     )
     OnChange = ListaOperadoresChange
     TabOrder = 48
+  end
+  object ListaCalculo: TMemo
+    Left = 776
+    Height = 360
+    Top = 80
+    Width = 150
+    Lines.Strings = (
+      'Calculo'
+    )
+    TabOrder = 49
   end
 end
