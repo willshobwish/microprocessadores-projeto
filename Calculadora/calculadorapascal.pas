@@ -435,8 +435,6 @@ end;
 
 procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
-  OperationFlag := True;
-  LimparZero();
   EnviarOperacao('cos', 'cos');
   EnviarOperacao('(', '(');
 end;
