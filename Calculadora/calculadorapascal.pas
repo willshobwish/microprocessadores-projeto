@@ -218,13 +218,14 @@ begin
     'sqr': Exit(True);
     'pow': Exit(True);
     'ysqrtx': Exit(True);
-    'tan': Exit(True);
-    'cos': Exit(True);
-    'sin': Exit(True);
     'ln': Exit(True);
     'log': Exit(True);
     '!': Exit(True);
     'e^': Exit(True);
+    'tan': Exit(True);
+    'cos': Exit(True);
+    'sin': Exit(True);
+    '~': Exit(True);
   end;
   Exit(False);
 end;
