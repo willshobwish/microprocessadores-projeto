@@ -61,7 +61,6 @@ type
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     procedure Backspace();
-    procedure ClearEntry();
     procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
     //---Fim da criacao dos procedimentos---
@@ -125,12 +124,12 @@ var
   TemporaryNumber: string;
   OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
   Division, Multiplication, ClearEntryFlag: boolean;
-  IndexPilhaPolonesa, IndexListaOperadores, IndexPilhaCalculo, IndexBackspace,
-  PrecedenciaAtual: integer;
+  IndexPilhaPolonesa, IndexPilhaOperadores, IndexPilhaCalculo,
+  IndexBackspace, PrecedenciaAtual: integer;
   //ListaOperandos de todas as operacoes que o usuario digitar
   PilhaPolonesa: array[0..100] of string;//ListaOperandos 1
   PilhaTemporariaOperadores: array[0..100] of string;//Expressao polonesa
-  PilhaCalculo: array[0..100] of string;
+  PilhaCalculoResultado: array[0..100] of string;
 
 implementation
 
@@ -140,7 +139,7 @@ implementation
 procedure Inicializacao();
 begin
   IndexPilhaPolonesa := 0;
-  IndexListaOperadores := 0;
+  IndexPilhaOperadores := 0;
   IndexBackspace := 0;
   PrecedenciaAtual := 0;
 end;
@@ -156,8 +155,8 @@ begin
     '-': Exit(True);
     '/': Exit(True);
     '*': Exit(True);
-    'sqr': Exit(True);
-    'pow': Exit(True);
+    '²': Exit(True);
+    '^': Exit(True);
     'ysqrtx': Exit(True);
     'ln': Exit(True);
     'log': Exit(True);
@@ -179,8 +178,8 @@ begin
     '-': Exit(2);
     '/': Exit(3);
     '*': Exit(3);
-    'sqr': Exit(4);
-    'pow': Exit(4);
+    '²': Exit(4);
+    '^': Exit(4);
     'ysqrtx': Exit(4);
     'ln': Exit(4);
     'log': Exit(4);
@@ -200,7 +199,7 @@ procedure TCalculator.Debug();
 var
   Index: integer;
 begin
-  for Index := 0 to IndexListaOperadores do
+  for Index := 0 to IndexPilhaOperadores do
   begin
     ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
       ']' + PilhaTemporariaOperadores[Index] + sLineBreak;
@@ -223,11 +222,11 @@ begin
     (Operacao = '/') or (Operacao = '^')) then
     //    Checa se a operacao necessita de dois operandos
   begin
-    FirstNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    FirstNumber := strtofloat(PilhaCalculoResultado[IndexPilhaCalculo - 1]);
     //    Pega o primeiro numero de baixo para cima
     IndexPilhaCalculo -= 1;
     //    Remove um do indice para apontar para o "proximo"
-    SecondNumber := strtofloat(PilhaCalculo[IndexPilhaCalculo - 1]);
+    SecondNumber := strtofloat(PilhaCalculoResultado[IndexPilhaCalculo - 1]);
     //    Pega o segundo numero de baixo para cima
     IndexPilhaCalculo -= 1;
     //    Remove um do indice para apontar para o "proximo"
@@ -291,7 +290,64 @@ begin
         end;
       end;
     end;
+  end
+  else
+    //Caso nao seja nenhum desses operadores acima, ele utilizara somente um operando
+  begin
+    case Operacao of
+      'ln': begin
+          {$asmmode intel}
+        asm
+
+        end;
+      end;
+      'log': begin
+          {$asmmode intel}
+        asm
+
+        end;
+      end;
+      '!': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+      'e^': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+      'tan': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+      'cos': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+      'sin': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+      '~': begin
+    {$asmmode intel}
+        asm
+
+        end;
+      end;
+    end;
   end;
+  PilhaCalculoResultado[IndexPilhaCalculo] := floattostr(Resultado);
+  //Envio dos resultados para uma terceira pilha que facilitara os calculos futuros
+  IndexPilhaCalculo += 1;
 end;
 
 procedure TCalculator.Backspace();
@@ -315,21 +371,6 @@ begin
   end;
 end;
 
-procedure TCalculator.ClearEntry();
-//Procedimento que apaga a entrada de operacao
-var
-  Temp: string;
-begin
-  //  Checa se foi inserido uma operacao para ser apagado
-  if ClearEntryFlag = True then
-  begin
-    Temp := Visor.Text;
-    Delete(Temp, Length(Temp), 1);
-    Visor.Text := Temp;
-    PilhaTemporariaOperadores[IndexListaOperadores - 1] := '';
-    ClearEntryFlag := False;
-  end;
-end;
 
 procedure TCalculator.ClearOperationFlag();
 begin
@@ -365,8 +406,8 @@ begin
   end;
   PilhaTemporariaParaL1(Operacao);
   Visor.Text := Visor.Text + Simbolo;
-  PilhaTemporariaOperadores[IndexListaOperadores] := Operacao;
-  IndexListaOperadores += 1;
+  PilhaTemporariaOperadores[IndexPilhaOperadores] := Operacao;
+  IndexPilhaOperadores += 1;
   Debug();
 end;
 
@@ -374,23 +415,23 @@ procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
 var
   Index, PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
 begin
-  if (IndexListaOperadores > 0) and (IndexPilhaPolonesa > 0) then
+  if (IndexPilhaOperadores > 0) and (IndexPilhaPolonesa > 0) then
     //Inicializa esse procedimento somente se ha operadores e numeros na lista
   begin
-    while ((ValidaOperador(PilhaTemporariaOperadores[IndexListaOperadores - 1])) and
-        (IndexListaOperadores > 0) and
-        (PilhaTemporariaOperadores[IndexListaOperadores - 1] <> '(')) do
+    while ((ValidaOperador(PilhaTemporariaOperadores[IndexPilhaOperadores - 1])) and
+        (IndexPilhaOperadores > 0) and
+        (PilhaTemporariaOperadores[IndexPilhaOperadores - 1] <> '(')) do
     begin
       PrecedenciaOperador := OrdemPrecedencia(Operador);
       PrecedenciaOperadorPilha :=
-        OrdemPrecedencia(PilhaTemporariaOperadores[IndexListaOperadores - 1]);
+        OrdemPrecedencia(PilhaTemporariaOperadores[IndexPilhaOperadores - 1]);
       if PrecedenciaOperadorPilha >= PrecedenciaOperador then
         //Verifica a ordem de precedencia do operador da pilha e do ultimo da pilha temporaria
       begin
         //Caso seja verdadeiro, ele coloca o ultimo operador na pilha temporaria
         PilhaPolonesa[IndexPilhaPolonesa] :=
-          PilhaTemporariaOperadores[IndexListaOperadores - 1];
-        IndexListaOperadores -= 1;
+          PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
+        IndexPilhaOperadores -= 1;
         //Reducao no indice do vetor de lista de operadores temporario para demonstrar o que foi processado
         IndexPilhaPolonesa += 1;
         //Incremento do indice do vetor da pilha polonesa
@@ -408,8 +449,18 @@ end;
 //---Fim das procedures---
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
 // Botao para limpar a entrada de operacao
+var
+  Temp: string;
 begin
-  ClearEntry();
+  //  Checa se foi inserido uma operacao para ser apagado
+  if ClearEntryFlag = True then
+  begin
+    Temp := Visor.Text;
+    Delete(Temp, Length(Temp), 1);
+    Visor.Text := Temp;
+    PilhaTemporariaOperadores[IndexPilhaOperadores - 1] := '';
+    ClearEntryFlag := False;
+  end;
 end;
 
 procedure TCalculator.BackspaceButtonClick(Sender: TObject);
@@ -427,12 +478,12 @@ begin
   begin
     PilhaPolonesa[Index] := '';
   end;
-  for Index := 0 to IndexListaOperadores do
+  for Index := 0 to IndexPilhaOperadores do
   begin
     PilhaTemporariaOperadores[Index] := '';
   end;
   IndexPilhaPolonesa := 0;
-  IndexListaOperadores := 0;
+  IndexPilhaOperadores := 0;
   //[Debug]
   ListaOperandos.Lines.Add('---Fim da operação---');
   ListaOperadores.Lines.Add('---Fim da operação---');
@@ -485,19 +536,30 @@ end;
 
 
 procedure TCalculator.EqualButtonClick(Sender: TObject);
+var
+  Index: integer;
 begin
   if TemporaryNumber <> '' then
+    //  Verifica se ha numero para ser enviado para a pilha polonesa antes de realizar as operacoes
   begin
     PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
     IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
+  end;
+  while (IndexPilhaOperadores > 0) do
+  begin
+    PilhaPolonesa[IndexPilhaPolonesa] :=
+      PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
+    IndexPilhaOperadores -= 1;
+    IndexPilhaPolonesa += 1;
   end;
   Debug();
 end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('e^', 'e^');
+  EnviarOperacao('e', 'e');
+  EnviarOperacao('^', '^');
 end;
 
 procedure TCalculator.FactorialButtonClick(Sender: TObject);
@@ -697,17 +759,23 @@ end;
 
 procedure TCalculator.SqrButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sqr', '²');
+  EnviarOperacao('²', '²');
 end;
 
 procedure TCalculator.XyButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('pow', '^');
+  EnviarOperacao('^', '^');
 end;
 
 procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
+//Pode-se utilizar a propriedade da potencia fracionaria
+//a^1/2 = sqrt(a)
+//a^1/n = nrt(a)
 begin
-  EnviarOperacao('ysqrtx', '√');
+  EnviarOperacao('^', '√');
+  PilhaPolonesa[IndexPilhaPolonesa] := '1';
+  IndexPilhaPolonesa += 1;
+  EnviarOperacao('/', '');
 end;
 
 procedure TCalculator.Button0Click(Sender: TObject);
