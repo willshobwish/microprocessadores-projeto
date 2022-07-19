@@ -12,13 +12,9 @@ type
   { TCalculator }
 
   TCalculator = class(TForm)
-    DebugVisualization: TEdit;
-    IndexDisplay: TEdit;
-    FirstNumberVisualization: TEdit;
     ListaOperandos: TMemo;
     ListaOperadores: TMemo;
     ListaCalculo: TMemo;
-    SecondNumberVisualization: TEdit;
     RightParenthesis: TButton;
     LeftParenthesis: TButton;
     ClearButton: TButton;
@@ -48,11 +44,7 @@ type
     FactorialButton: TButton;
     LogButton: TButton;
     LnButton: TButton;
-    MemoryRestoreButton: TButton;
-    MemoryStoreButton: TButton;
-    MemoryPlusButton: TButton;
     PiButton: TButton;
-    MemoryClearButton: TButton;
     MinusButton: TButton;
     PlusButton: TButton;
     Button9: TButton;
@@ -63,7 +55,7 @@ type
     RadianRadio: TRadioButton;
     Visor: TEdit;
     //---Procedimentos criados para o projeto---
-    procedure EnviarNumeroLista(Numero: string);
+    procedure ColocaNumero(Numero: string);
     procedure LimparZero();
     procedure ClearOperationFlag();
     procedure Debug();
@@ -133,11 +125,11 @@ var
   TemporaryNumber: string;
   OperationFlag, BlockOperation, FloatingPoint, Sum, Subtraction,
   Division, Multiplication, ClearEntryFlag: boolean;
-  IndexListaL1, IndexTemporariaPolonesa, IndexPilhaCalculo, IndexBackspace,
-  ProcedenciaAtual: integer;
+  IndexPilhaPolonesa, IndexListaOperadores, IndexPilhaCalculo, IndexBackspace,
+  PrecedenciaAtual: integer;
   //ListaOperandos de todas as operacoes que o usuario digitar
-  PilhaL1: array[0..100] of string;//ListaOperandos 1
-  PilhaTemporariaPolonesa: array[0..100] of string;//Expressao polonesa
+  PilhaPolonesa: array[0..100] of string;//ListaOperandos 1
+  PilhaTemporariaOperadores: array[0..100] of string;//Expressao polonesa
   PilhaCalculo: array[0..100] of string;
 
 implementation
@@ -147,10 +139,10 @@ implementation
 { TCalculator }
 procedure Inicializacao();
 begin
-  IndexListaL1 := 0;
-  IndexTemporariaPolonesa := 0;
+  IndexPilhaPolonesa := 0;
+  IndexListaOperadores := 0;
   IndexBackspace := 0;
-  ProcedenciaAtual := 0;
+  PrecedenciaAtual := 0;
 end;
 
 //---Inicio de criacao de funcoes para o projeto---
@@ -179,7 +171,7 @@ begin
   Exit(False);
 end;
 
-function OrdemProcedencia(Operador: string): integer;
+function OrdemPrecedencia(Operador: string): integer;
   //Funcao retorna a ordem de procedencia de cada operacao
 begin
   case Operador of
@@ -208,15 +200,16 @@ procedure TCalculator.Debug();
 var
   Index: integer;
 begin
-  for Index := 0 to IndexTemporariaPolonesa do
+  for Index := 0 to IndexListaOperadores do
   begin
     ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
-      ']' + PilhaTemporariaPolonesa[Index] + sLineBreak;
+      ']' + PilhaTemporariaOperadores[Index] + sLineBreak;
   end;
-  for Index := 0 to IndexListaL1 do
+  for Index := 0 to IndexPilhaPolonesa do
   begin
     ListaOperandos.Text :=
-      ListaOperandos.Text + '[' + IntToStr(Index) + ']' + PilhaL1[Index] + sLineBreak;
+      ListaOperandos.Text + '[' + IntToStr(Index) + ']' +
+      PilhaPolonesa[Index] + sLineBreak;
   end;
   ListaOperadores.Lines.Add('------');
   ListaOperandos.Lines.Add('------');
@@ -333,7 +326,7 @@ begin
     Temp := Visor.Text;
     Delete(Temp, Length(Temp), 1);
     Visor.Text := Temp;
-    PilhaTemporariaPolonesa[IndexTemporariaPolonesa - 1] := '';
+    PilhaTemporariaOperadores[IndexListaOperadores - 1] := '';
     ClearEntryFlag := False;
   end;
 end;
@@ -366,30 +359,51 @@ begin
   if TemporaryNumber <> '' then
     //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
   begin
-    PilhaL1[IndexListaL1] := TemporaryNumber;
+    PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
+    IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
-    IndexListaL1 += 1;
   end;
   PilhaTemporariaParaL1(Operacao);
   Visor.Text := Visor.Text + Simbolo;
-  PilhaTemporariaPolonesa[IndexTemporariaPolonesa] := Operacao;
-  IndexTemporariaPolonesa += 1;
+  PilhaTemporariaOperadores[IndexListaOperadores] := Operacao;
+  IndexListaOperadores += 1;
   Debug();
 end;
 
 procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
+var
+  Index, PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
 begin
-  if OrdemProcedencia(Operador) >= ProcedenciaAtual then
+  if (IndexListaOperadores > 0) and (IndexPilhaPolonesa > 0) then
+    //Inicializa esse procedimento somente se ha operadores e numeros na lista
   begin
-    PilhaL1[IndexListaL1] := Operador;
-    IndexListaL1 += 1;
-    ProcedenciaAtual := OrdemProcedencia(Operador);
-  end
-  else
-  begin
-
+    while ((ValidaOperador(PilhaTemporariaOperadores[IndexListaOperadores - 1])) and
+        (IndexListaOperadores > 0) and
+        (PilhaTemporariaOperadores[IndexListaOperadores - 1] <> '(')) do
+    begin
+      PrecedenciaOperador := OrdemPrecedencia(Operador);
+      PrecedenciaOperadorPilha :=
+        OrdemPrecedencia(PilhaTemporariaOperadores[IndexListaOperadores - 1]);
+      if PrecedenciaOperadorPilha >= PrecedenciaOperador then
+        //Verifica a ordem de precedencia do operador da pilha e do ultimo da pilha temporaria
+      begin
+        //Caso seja verdadeiro, ele coloca o ultimo operador na pilha temporaria
+        PilhaPolonesa[IndexPilhaPolonesa] :=
+          PilhaTemporariaOperadores[IndexListaOperadores - 1];
+        IndexListaOperadores -= 1;
+        //Reducao no indice do vetor de lista de operadores temporario para demonstrar o que foi processado
+        IndexPilhaPolonesa += 1;
+        //Incremento do indice do vetor da pilha polonesa
+      end
+      else
+      begin
+        break;
+        //Imterrompendo o loop, caso contrario ele nao saira dessa condicional
+      end;
+    end;
   end;
 end;
+
 
 //---Fim das procedures---
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
@@ -408,20 +422,17 @@ procedure TCalculator.ClearButtonClick(Sender: TObject);
 var
   Index: integer;
 begin
-  //  [Debug] Limpar a exibicao em testes
-  DebugVisualization.Text := '0';
-  //  [Debug]
   OperationFlag := False;
-  for Index := 0 to IndexListaL1 do
+  for Index := 0 to IndexPilhaPolonesa do
   begin
-    PilhaL1[Index] := '';
+    PilhaPolonesa[Index] := '';
   end;
-  for Index := 0 to IndexTemporariaPolonesa do
+  for Index := 0 to IndexListaOperadores do
   begin
-    PilhaTemporariaPolonesa[Index] := '';
+    PilhaTemporariaOperadores[Index] := '';
   end;
-  IndexListaL1 := 0;
-  IndexTemporariaPolonesa := 0;
+  IndexPilhaPolonesa := 0;
+  IndexListaOperadores := 0;
   //[Debug]
   ListaOperandos.Lines.Add('---Fim da operação---');
   ListaOperadores.Lines.Add('---Fim da operação---');
@@ -429,15 +440,16 @@ begin
   Visor.Text := '';
   MemoryCalculator := 0;
   FloatingPoint := False;
-  ProcedenciaAtual := 0;
+  PrecedenciaAtual := 0;
 end;
 
 //Enviar o numero para a visualizacao e variavel temporaria que armazena o numero
-procedure TCalculator.EnviarNumeroLista(Numero: string);
+procedure TCalculator.ColocaNumero(Numero: string);
 begin
   LimparZero();
   Visor.Text := Visor.Text + Numero;
   TemporaryNumber := TemporaryNumber + Numero;
+  ClearEntryFlag := False;
 end;
 
 procedure TCalculator.CosButtonClick(Sender: TObject);
@@ -468,25 +480,17 @@ end;
 
 procedure TCalculator.Button8Click(Sender: TObject);
 begin
-  EnviarNumeroLista('8');
+  ColocaNumero('8');
 end;
 
 
 procedure TCalculator.EqualButtonClick(Sender: TObject);
-var
-  Index: integer;
-  TempString, teste: string;
-  TempNumberFirst, TempNumberSecond, Result: real;
 begin
-  //A calculadora funcionara somente se alguma operacao for acionada
-  if (OperationFlag = True) and (TemporaryNumber <> '') then
+  if TemporaryNumber <> '' then
   begin
-    //Para contabilizar o ultimo numero que for inserido
-    PilhaL1[IndexListaL1] := TemporaryNumber;
-    IndexListaL1 += 1;
+    PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
+    IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
-    //Inicio da varredura do array de operacoes
-
   end;
   Debug();
 end;
@@ -503,7 +507,7 @@ end;
 
 procedure TCalculator.Button5Click(Sender: TObject);
 begin
-  EnviarNumeroLista('5');
+  ColocaNumero('5');
 end;
 
 procedure TCalculator.FormCreate(Sender: TObject);
@@ -513,7 +517,7 @@ end;
 
 procedure TCalculator.Button4Click(Sender: TObject);
 begin
-  EnviarNumeroLista('4');
+  ColocaNumero('4');
 end;
 
 procedure TCalculator.IndexDisplayChange(Sender: TObject);
@@ -583,17 +587,18 @@ end;
 
 procedure TCalculator.Button9Click(Sender: TObject);
 begin
-  EnviarNumeroLista('9');
+  ColocaNumero('9');
 end;
 
 procedure TCalculator.Button1Click(Sender: TObject);
 begin
-  EnviarNumeroLista('1');
+  ColocaNumero('1');
 end;
 
 procedure TCalculator.OneXButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('1/x', '1/');
+  ColocaNumero('1');
+  EnviarOperacao('/', '/');
 end;
 
 procedure TCalculator.PiButtonClick(Sender: TObject);
@@ -606,7 +611,7 @@ begin
            FLDPI
            FSTP    temp
   end;
-  EnviarNumeroLista(floattostr(temp));
+  ColocaNumero(floattostr(temp));
 end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
@@ -638,7 +643,7 @@ end;
 
 procedure TCalculator.Button7Click(Sender: TObject);
 begin
-  EnviarNumeroLista('7');
+  ColocaNumero('7');
 end;
 
 procedure TCalculator.SignalButtonClick(Sender: TObject);
@@ -654,7 +659,7 @@ end;
 
 procedure TCalculator.Button6Click(Sender: TObject);
 begin
-  EnviarNumeroLista('6');
+  ColocaNumero('6');
 end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
@@ -671,7 +676,7 @@ end;
 
 procedure TCalculator.Button3Click(Sender: TObject);
 begin
-  EnviarNumeroLista('3');
+  ColocaNumero('3');
 end;
 
 procedure TCalculator.InverseCheckChange(Sender: TObject);
@@ -681,12 +686,10 @@ end;
 
 procedure TCalculator.Button2Click(Sender: TObject);
 begin
-  EnviarNumeroLista('2');
+  ColocaNumero('2');
 end;
 
 procedure TCalculator.VisorChange(Sender: TObject);
-var
-  Index: integer;
 begin
 
 end;
@@ -711,7 +714,7 @@ procedure TCalculator.Button0Click(Sender: TObject);
 begin
   if Visor.Text <> '0' then
   begin
-    EnviarNumeroLista('0');
+    ColocaNumero('0');
   end;
 
 end;
