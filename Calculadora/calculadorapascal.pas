@@ -271,7 +271,7 @@ begin
                  FINIT
                  FLD   FirstNumber
                  FLD   SecondNumber
-                 FDIVR ST,ST(1)
+                 FDIV ST,ST(1)
                  FSTP  Resultado
         end;
       end;
