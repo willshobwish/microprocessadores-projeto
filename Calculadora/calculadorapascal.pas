@@ -343,7 +343,10 @@ begin
       'cos': begin
     {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber
+                 FCOS
+                 FSTP  Resultado
         end;
       end;
       'sin': begin
