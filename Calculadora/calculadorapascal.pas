@@ -761,7 +761,8 @@ end;
 
 procedure TCalculator.SqrButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('²', '²');
+  EnviarOperacao('^', '^');
+  ColocaNumero('2');
 end;
 
 procedure TCalculator.XyButtonClick(Sender: TObject);
