@@ -271,7 +271,7 @@ begin
                  FINIT
                  FLD   FirstNumber
                  FLD   SecondNumber
-                 FDIV ST,ST(1)
+                 FDIV  ST,ST(1)
                  FSTP  Resultado
         end;
       end;
@@ -296,8 +296,13 @@ begin
     end;
   end
   else
-    //Caso nao seja nenhum desses operadores acima, ele utilizara somente um operando
+    //Caso nao seja nenhuma das operacoes que utilizam dois operandos
+    //Ele utilizara somente um operando
   begin
+    FirstNumber := strtofloat(PilhaCalculoResultado[IndexPilhaCalculo - 1]);
+    //Pegando o numero "anterior" ao operador para a operacao
+    IndexPilhaCalculo -= 1;
+    //Decremento do indice
     case Operacao of
       'ln': begin
           {$asmmode intel}
