@@ -220,17 +220,18 @@ var
 begin
   if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
     (Operacao = '/') or (Operacao = '^')) then
-    //    Checa se a operacao necessita de dois operandos
+    //Checa se a operacao necessita de dois operandos
   begin
     FirstNumber := strtofloat(PilhaCalculoResultado[IndexPilhaCalculo - 1]);
-    //    Pega o primeiro numero de baixo para cima
+    //Pega o primeiro numero de baixo para cima
     IndexPilhaCalculo -= 1;
-    //    Remove um do indice para apontar para o "proximo"
+    //Remove um do indice para apontar para o "proximo"
     SecondNumber := strtofloat(PilhaCalculoResultado[IndexPilhaCalculo - 1]);
-    //    Pega o segundo numero de baixo para cima
+    //Pega o segundo numero de baixo para cima
     IndexPilhaCalculo -= 1;
-    //    Remove um do indice para apontar para o "proximo"
+    //Remove um do indice para apontar para o "proximo"
     case Operacao of
+      //Utilizacao da estrutura de switch case para saber qual eh a operacao que deve ser realizado consultando a pilha polonesa
       '+': begin
      {$asmmode intel}
         asm
@@ -238,6 +239,7 @@ begin
                  FLD   FirstNumber
                  FLD   SecondNumber
                  FADD  ST,ST(1)
+                 //Utilizacao de operandos durante as operacoes na fpu por recomendacao do proprio Lazarus
                  FSTP  Resultado
         end;
       end;
@@ -699,7 +701,7 @@ end;
 
 procedure TCalculator.RightParenthesisClick(Sender: TObject);
 begin
-  LimparZero();
+  //LimparZero();
   EnviarOperacao(')', ')');
 end;
 
