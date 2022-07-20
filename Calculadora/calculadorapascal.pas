@@ -714,8 +714,8 @@ procedure TCalculator.PontoButtonClick(Sender: TObject);
 begin
   if (FloatingPoint = False) then
   begin
-    Visor.Text := Visor.Text + '.';
-    TemporaryNumber := TemporaryNumber + '.';
+    Visor.Text := Visor.Text + ',';
+    TemporaryNumber := TemporaryNumber + ',';
     FloatingPoint := True;
   end;
 
