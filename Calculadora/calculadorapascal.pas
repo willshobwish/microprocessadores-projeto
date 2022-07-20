@@ -188,6 +188,22 @@ begin
   end;
   Exit(0);
 end;
+
+function Pi(): real;
+  //O numero pi eh calculado direto na FPU para maior precisao
+var
+  temp: real;
+begin
+  {$asmmode intel}
+  asm
+           FINIT
+           FLDPI
+           FSTP    temp
+  end;
+  Exit(temp);
+  //Retorna diretamente o numero pi para a pilha polonesa e no visor
+end;
+
 //---Fim das funcoes---
 //---Inicio das procedures---
 procedure TCalculator.Debug();
