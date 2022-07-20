@@ -543,26 +543,46 @@ procedure TCalculator.EqualButtonClick(Sender: TObject);
 var
   Index: integer;
 begin
+  Index := 0;
   if TemporaryNumber <> '' then
-    //  Verifica se ha numero para ser enviado para a pilha polonesa antes de realizar as operacoes
+    //Verifica se ha numero no "visor" para ser enviado para a pilha polonesa antes de realizar as operacoes
   begin
     PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
     IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
   end;
   while (IndexPilhaOperadores > 0) do
+    //Pega todos os operadores e transfere para a pilha polonesa
+    //Como ja foi organizado de maneira pos fixa, pode ir transferindo do final para o comeco para a pilha polonesa
   begin
     PilhaPolonesa[IndexPilhaPolonesa] :=
       PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
     IndexPilhaOperadores -= 1;
     IndexPilhaPolonesa += 1;
   end;
+  IndexPilhaCalculo := 0;
+  while Index < IndexPilhaPolonesa do
+  begin
+    if ValidaOperador(PilhaPolonesa[Index]) then
+      //Caso a funcao retorne true, ele processa a operacao e o resultado ira para a pilha de calculos
+    begin
+      Calculo(PilhaPolonesa[Index]);
+    end
+    else
+      //Caso a funcao retorne false, sera um numero que devera ser colocado na pilha de calculos
+    begin
+      PilhaCalculoResultado[IndexPilhaCalculo] := PilhaPolonesa[Index];
+      IndexPilhaCalculo += 1;
+    end;
+    index += 1;
+  end;
+  Visor.Text := PilhaCalculoResultado[IndexPilhaCalculo - 1];
   Debug();
 end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('e', 'e');
+  ColocaNumero('2,71828');
   EnviarOperacao('^', '^');
 end;
 
@@ -593,7 +613,10 @@ end;
 
 procedure TCalculator.LeftParenthesisClick(Sender: TObject);
 begin
-  EnviarOperacao('(', '(');
+  //EnviarOperacao('(', '(');
+  PilhaTemporariaOperadores[IndexPilhaOperadores] := '(';
+  IndexPilhaOperadores += 1;
+  visor.Text := visor.Text + '(';
 end;
 
 procedure TCalculator.ListaOperadoresChange(Sender: TObject);
@@ -705,8 +728,28 @@ end;
 
 procedure TCalculator.RightParenthesisClick(Sender: TObject);
 begin
-  //LimparZero();
-  EnviarOperacao(')', ')');
+  if TemporaryNumber <> '' then
+    //Quando o botao de parenteses direito eh acionado, ele precisa transferir todas as operacoes de dentro para a pilha polonesa
+    //Esse processo dura ate encontrar o parenteses esquerdo
+  begin
+    PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
+    IndexPilhaPolonesa += 1;
+    TemporaryNumber := '';
+  end;
+  if Visor.Text <> '' then
+  begin
+    while (PilhaTemporariaOperadores[IndexPilhaOperadores - 1] <> '(') do
+    begin
+      PilhaPolonesa[IndexPilhaPolonesa] :=
+        PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
+      IndexPilhaPolonesa += 1;
+      IndexPilhaOperadores -= 1;
+    end;
+    IndexPilhaOperadores -= 1;
+    Visor.Text := Visor.Text + ')';
+    //Nao pode utilizar a funcao de enviar operacoes porque ele acionaria flags e indices que quebraria a calculadora
+  end;
+  debug();
 end;
 
 procedure TCalculator.Button7Click(Sender: TObject);
