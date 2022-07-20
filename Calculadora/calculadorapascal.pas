@@ -157,6 +157,7 @@ begin
     '*': Exit(True);
     '²': Exit(True);
     '^': Exit(True);
+    '√': Exit(True);
     'ysqrtx': Exit(True);
     'ln': Exit(True);
     'log': Exit(True);
@@ -180,6 +181,7 @@ begin
     '*': Exit(3);
     '²': Exit(4);
     '^': Exit(4);
+    '√': Exit(4);
     'ysqrtx': Exit(4);
     'ln': Exit(4);
     'log': Exit(4);
@@ -730,7 +732,7 @@ end;
 
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sqrt', '√');
+  EnviarOperacao('√', '√');
   EnviarOperacao('(', '(');
 end;
 
