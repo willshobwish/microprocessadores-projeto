@@ -63,6 +63,7 @@ type
     procedure Backspace();
     procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
+    procedure Inverso(Numero, Angulo: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
@@ -481,6 +482,13 @@ begin
   end;
 end;
 
+procedure TCalculator.Inverso(Numero, Angulo: string);
+begin
+  ColocaNumero('1');
+  ColocaNumero(Numero);
+  EnviarOperacao(Angulo, Angulo);
+  EnviarOperacao('/', '');
+end;
 
 //---Fim das procedures---
 procedure TCalculator.ClearEntryButtonClick(Sender: TObject);
@@ -795,8 +803,15 @@ end;
 
 procedure TCalculator.SinButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('sin', 'sin');
-  EnviarOperacao('(', '(');
+  if InverseCheck.Checked = True then
+  begin
+    Inverso('sin');
+  end
+  else
+  begin
+    EnviarOperacao('sin', 'sin');
+    EnviarOperacao('(', '(');
+  end;
 end;
 
 procedure TCalculator.Button6Click(Sender: TObject);
