@@ -666,6 +666,7 @@ begin
 end;
 
 procedure TCalculator.PiButtonClick(Sender: TObject);
+//O numero pi eh calculado direto na FPU para maior precisao
 var
   temp: real;
 begin
@@ -676,6 +677,7 @@ begin
            FSTP    temp
   end;
   ColocaNumero(floattostr(temp));
+  //Retorna diretamente o numero pi para a pilha polonesa e no visor
 end;
 
 procedure TCalculator.PlusButtonClick(Sender: TObject);
