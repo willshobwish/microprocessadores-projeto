@@ -352,7 +352,10 @@ begin
       'sin': begin
     {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber
+                 FSIN
+                 FSTP  Resultado
         end;
       end;
       '~': begin
@@ -732,7 +735,6 @@ begin
     TemporaryNumber := TemporaryNumber + ',';
     FloatingPoint := True;
   end;
-
 end;
 
 procedure TCalculator.RadianRadioChange(Sender: TObject);
