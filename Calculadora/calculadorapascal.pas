@@ -146,8 +146,6 @@ end;
 
 //---Inicio de criacao de funcoes para o projeto---
 //Funcoes para realizar os calculos na FPU
-
-
 function ValidaOperador(Operador: string): boolean;
 begin
   case Operador of
@@ -155,14 +153,12 @@ begin
     '-': Exit(True);
     '/': Exit(True);
     '*': Exit(True);
-    //'²': Exit(True);
     '^': Exit(True);
     '√': Exit(True);
     'ysqrtx': Exit(True);
     'ln': Exit(True);
     'log': Exit(True);
     '!': Exit(True);
-    //'e^': Exit(True);
     'tan': Exit(True);
     'cos': Exit(True);
     'sin': Exit(True);
@@ -179,14 +175,12 @@ begin
     '-': Exit(2);
     '/': Exit(3);
     '*': Exit(3);
-    //'²': Exit(4);
     '^': Exit(4);
     '√': Exit(4);
     'ysqrtx': Exit(4);
     'ln': Exit(4);
     'log': Exit(4);
     '!': Exit(4);
-    //'e^': Exit(4);
     'tan': Exit(5);
     'cos': Exit(5);
     'sin': Exit(5);
