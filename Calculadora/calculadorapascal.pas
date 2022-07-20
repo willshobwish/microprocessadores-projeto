@@ -361,7 +361,10 @@ begin
       '~': begin
     {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber
+                 FCHS
+                 FSTP  Resultado
         end;
       end;
     end;
