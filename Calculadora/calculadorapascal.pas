@@ -304,13 +304,16 @@ begin
     IndexPilhaCalculo -= 1;
     //Decremento do indice
     case Operacao of
-      'ln': begin
+      '√': begin
           {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber
+                 FSQRT
+                 FSTP  Resultado
         end;
       end;
-      'log': begin
+      'ln': begin
           {$asmmode intel}
         asm
 
