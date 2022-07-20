@@ -319,13 +319,13 @@ begin
 
         end;
       end;
-      '!': begin
-    {$asmmode intel}
+      'log': begin
+          {$asmmode intel}
         asm
 
         end;
       end;
-      'e^': begin
+      '!': begin
     {$asmmode intel}
         asm
 
