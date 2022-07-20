@@ -853,10 +853,10 @@ procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
 //a^1/2 = sqrt(a)
 //a^1/n = nrt(a)
 begin
-  EnviarOperacao('^', '√');
+  EnviarOperacao('/', '');
   PilhaPolonesa[IndexPilhaPolonesa] := '1';
   IndexPilhaPolonesa += 1;
-  EnviarOperacao('/', '');
+  EnviarOperacao('^', '√');
 end;
 
 procedure TCalculator.Button0Click(Sender: TObject);
