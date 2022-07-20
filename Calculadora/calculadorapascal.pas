@@ -334,7 +334,10 @@ begin
       'tan': begin
     {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber
+                 FSIN
+                 FSTP  Resultado
         end;
       end;
       'cos': begin
