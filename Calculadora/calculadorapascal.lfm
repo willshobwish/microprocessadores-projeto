@@ -1,7 +1,7 @@
 object Calculator: TCalculator
-  Left = 224
+  Left = -635
   Height = 537
-  Top = 350
+  Top = 279
   Width = 955
   Caption = 'Calculadora'
   ClientHeight = 537
@@ -174,19 +174,19 @@ object Calculator: TCalculator
     Left = 104
     Height = 19
     Top = 56
-    Width = 57
-    Caption = 'Degree'
+    Width = 50
+    Caption = 'Graus'
     Checked = True
     OnChange = DegreeRadioChange
     TabOrder = 36
     TabStop = True
   end
   object RadianRadio: TRadioButton
-    Left = 178
+    Left = 160
     Height = 19
     Top = 56
-    Width = 56
-    Caption = 'Radian'
+    Width = 68
+    Caption = 'Radianos'
     OnChange = RadianRadioChange
     TabOrder = 19
   end
@@ -302,8 +302,8 @@ object Calculator: TCalculator
     Left = 40
     Height = 19
     Top = 56
-    Width = 36
-    Caption = 'Inv'
+    Width = 58
+    Caption = 'Inverso'
     OnChange = InverseCheckChange
     TabOrder = 33
   end

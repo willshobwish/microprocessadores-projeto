@@ -218,8 +218,9 @@ end;
 
 procedure TCalculator.Calculo(Operacao: string);
 var
-  FirstNumber, SecondNumber, Resultado: real;
+  FirstNumber, SecondNumber, Resultado, Pi: real;
 begin
+  Pi := 3.14159265358979;
   if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
     (Operacao = '/') or (Operacao = '^')) then
     //Checa se a operacao necessita de dois operandos
@@ -303,6 +304,7 @@ begin
     //Pegando o numero "anterior" ao operador para a operacao
     IndexPilhaCalculo -= 1;
     //Decremento do indice
+    if (DegreeRadio.Checked = True) then FirstNumber := (FirstNumber * Pi) / 180;
     case Operacao of
       '√': begin
           {$asmmode intel}
