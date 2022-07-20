@@ -369,7 +369,7 @@ begin
   if MaxDelete > 0 then
     //  Delimita o quanto que pode ser apagado do visor da calculadora
   begin
-    //    Caso o tamanho da string do numero seja maior que zero, ele apagara e atualizara o visor
+    //Caso o tamanho da string do numero seja maior que zero, ele apagara e atualizara o visor
     Delete(Temp, Length(TemporaryNumber), 1);
     Visor.Text := Temp;
   end;
