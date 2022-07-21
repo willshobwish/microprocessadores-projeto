@@ -1,7 +1,7 @@
 object Calculator: TCalculator
-  Left = -883
+  Left = 595
   Height = 537
-  Top = 612
+  Top = 209
   Width = 955
   Caption = 'Calculadora'
   ClientHeight = 537

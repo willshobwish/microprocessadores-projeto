@@ -391,7 +391,7 @@ procedure TCalculator.Backspace();
 //Procedimento que apaga o que foi escrito, apaga somente o ultimo numero que foi inserido
 var
   Temp: string;
-  MaxDelete, Index: integer;
+  MaxDelete: integer;
 begin
   MaxDelete := Length(TemporaryNumber);
   //  Determina o quanto que pode ser apagado
@@ -403,7 +403,7 @@ begin
     //  Delimita o quanto que pode ser apagado do visor da calculadora
   begin
     //Caso o tamanho da string do numero seja maior que zero, ele apagara e atualizara o visor
-    Delete(Temp, Length(TemporaryNumber), 1);
+    Delete(Temp, Length(Temp), 1);
     Visor.Text := Temp;
   end;
 end;
