@@ -466,7 +466,7 @@ begin
   ClearEntryFlag := True;
   //Indica que foi enviado uma operacao e que eh possivel apagar a operacao
   if TemporaryNumber <> '' then
-  //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
+    //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
   begin
     PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
     IndexPilhaPolonesa += 1;
@@ -554,7 +554,7 @@ var
 begin
   OperationFlag := False;
   for Index := 0 to IndexPilhaPolonesa do
-  //Realiza uma varredura pelo vetor colocando "nada" como string
+    //Realiza uma varredura pelo vetor colocando "nada" como string
   begin
     PilhaPolonesa[Index] := '';
   end;
