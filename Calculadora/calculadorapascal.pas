@@ -148,6 +148,7 @@ end;
 //---Inicio de criacao de funcoes para o projeto---
 //Funcoes para realizar os calculos na FPU
 function ValidaOperador(Operador: string): boolean;
+//Quando essa funcao eh invocada, retorna se o operador eh valido ou nao
 begin
   case Operador of
     '+': Exit(True);
@@ -299,6 +300,7 @@ begin
       '^': begin
       {$asmmode intel}
         asm
+        //Utilizacao das instrucoes apresentados durante a aula
                  FINIT
                  FLD     FirstNumber
                  FLD     SecondNumber
@@ -448,19 +450,20 @@ end;
 procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
 begin
   FloatingPoint := False;
-  //  Verifica se ha zeros no visor da calculadora
+  //Verifica se ha zeros no visor da calculadora
   OperationFlag := True;
-  //  Indica que foi enviado uma operacao e que eh possivel executar o sinal de igual
+  //Indica que foi enviado uma operacao e que eh possivel executar o sinal de igual
   ClearEntryFlag := True;
-  //  Indica que foi enviado uma operacao e que eh possivel apagar a operacao
+  //Indica que foi enviado uma operacao e que eh possivel apagar a operacao
   if TemporaryNumber <> '' then
-    //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
+  //Verifica se a variavel de numero temporario possui algum valor, caso tenha, esse valor eh colocado no vetor temporario
   begin
     PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
     IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
   end;
   PilhaTemporariaParaL1(Operacao);
+  //Invoca o procedimento para realizar a pilha polonesa a cada operacao que eh enviada
   Visor.Text := Visor.Text + Simbolo;
   PilhaTemporariaOperadores[IndexPilhaOperadores] := Operacao;
   IndexPilhaOperadores += 1;
@@ -469,7 +472,7 @@ end;
 
 procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
 var
-  Index, PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
+  PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
 begin
   if (IndexPilhaOperadores > 0) and (IndexPilhaPolonesa > 0) then
     //Inicializa esse procedimento somente se ha operadores e numeros na lista
@@ -522,6 +525,7 @@ begin
   begin
     Temp := Visor.Text;
     Delete(Temp, Length(Temp), 1);
+    //A funcao delete apaga uma parte da string, indicando o indice de inicio e a quantidade de caracteres que deve ser apagado
     Visor.Text := Temp;
     PilhaTemporariaOperadores[IndexPilhaOperadores - 1] := '';
     ClearEntryFlag := False;
@@ -540,6 +544,7 @@ var
 begin
   OperationFlag := False;
   for Index := 0 to IndexPilhaPolonesa do
+  //Realiza uma varredura pelo vetor colocando "nada" como string
   begin
     PilhaPolonesa[Index] := '';
   end;
@@ -779,6 +784,8 @@ end;
 procedure TCalculator.PontoButtonClick(Sender: TObject);
 begin
   if (FloatingPoint = False) then
+    //Este flag pode ativar somente uma vez, para que nao tenha mais de um ponto flutuante por numero
+    //Sempre eh resetado quando um numero vai para a pilha
   begin
     Visor.Text := Visor.Text + ',';
     TemporaryNumber := TemporaryNumber + ',';
@@ -812,7 +819,7 @@ begin
     end;
     IndexPilhaOperadores -= 1;
     Visor.Text := Visor.Text + ')';
-    //Nao pode utilizar a funcao de enviar operacoes porque ele acionaria flags e indices que quebraria a calculadora
+    //Nao pode utilizar a funcao de enviar operacoes porque ele acionaria flags e indices que apresentaria o mal funcionamento da calculadora
   end;
   debug();
 end;
@@ -830,6 +837,7 @@ end;
 procedure TCalculator.SinButtonClick(Sender: TObject);
 begin
   if InverseCheck.Checked = True then
+    //Caso o inverso esteja marcado, ele invoca o procedimento que envia as operacoes para realizar o inverso do angulo
   begin
     Inverso('sin');
   end
@@ -887,6 +895,7 @@ end;
 
 procedure TCalculator.SqrButtonClick(Sender: TObject);
 begin
+  //Em numeros elevados ao quadrado, eh enviado a operacao de potencia mais o 2
   EnviarOperacao('^', '^');
   ColocaNumero('2');
 end;
@@ -901,6 +910,7 @@ procedure TCalculator.YsqrtxButtonClick(Sender: TObject);
 //a^1/2 = sqrt(a)
 //a^1/n = nrt(a)
 begin
+  //Envio de operacoes para realizar a raiz enesima utilizando a propriedade
   EnviarOperacao('/', '');
   PilhaPolonesa[IndexPilhaPolonesa] := '1';
   IndexPilhaPolonesa += 1;
@@ -914,4 +924,5 @@ begin
     ColocaNumero('0');
   end;
 end;
+
 end.
