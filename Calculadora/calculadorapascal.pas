@@ -64,6 +64,7 @@ type
     procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
     procedure Inverso(Angulo: string);
+    procedure ParentesesEsquerdo();
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
@@ -224,6 +225,13 @@ begin
   end;
   ListaOperadores.Lines.Add('------');
   ListaOperandos.Lines.Add('------');
+end;
+
+procedure TCalculator.ParentesesEsquerdo();
+begin
+  PilhaTemporariaOperadores[IndexPilhaOperadores] := '(';
+  IndexPilhaOperadores += 1;
+  visor.Text := visor.Text + '(';
 end;
 
 procedure TCalculator.Calculo(Operacao: string);
@@ -654,10 +662,7 @@ end;
 
 procedure TCalculator.LeftParenthesisClick(Sender: TObject);
 begin
-  //EnviarOperacao('(', '(');
-  PilhaTemporariaOperadores[IndexPilhaOperadores] := '(';
-  IndexPilhaOperadores += 1;
-  visor.Text := visor.Text + '(';
+  ParentesesEsquerdo();
 end;
 
 procedure TCalculator.ListaOperadoresChange(Sender: TObject);
