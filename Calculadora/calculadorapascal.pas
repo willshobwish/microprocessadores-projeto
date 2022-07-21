@@ -874,8 +874,5 @@ begin
   begin
     ColocaNumero('0');
   end;
-
 end;
-
-
 end.
