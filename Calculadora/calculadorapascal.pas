@@ -553,6 +553,7 @@ begin
     PilhaTemporariaOperadores[Index] := '';
   end;
   IndexPilhaPolonesa := 0;
+  //Reseta os indices dos vetores
   IndexPilhaOperadores := 0;
   //[Debug]
   ListaOperandos.Lines.Add('---Fim da operação---');
@@ -656,6 +657,7 @@ end;
 procedure TCalculator.ExButtonClick(Sender: TObject);
 begin
   ColocaNumero('2,71828');
+  //Numero de euler
   EnviarOperacao('^', '^');
 end;
 
