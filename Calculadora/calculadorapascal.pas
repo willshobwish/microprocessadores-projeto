@@ -501,10 +501,12 @@ begin
 end;
 
 procedure TCalculator.Inverso(Angulo: string);
+//A operacao inversa pode ser descrita como 1/angulo = arco
 begin
-  ColocaNumero('1');
-  EnviarOperacao('/', '/');
-  EnviarOperacao(Angulo, Angulo);
+  TemporaryNumber := TemporaryNumber + '1';
+  ClearEntryFlag := False;
+  EnviarOperacao('/', '');
+  EnviarOperacao(Angulo, Angulo + '^-1');
   ParentesesEsquerdo();
 end;
 
