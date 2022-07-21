@@ -324,7 +324,7 @@ begin
     //Pegando o numero "anterior" ao operador para a operacao
     IndexPilhaCalculo -= 1;
     //Decremento do indice
-    if (DegreeRadio.Checked = True) then FirstNumber := (FirstNumber * PiCalculo) / 180;
+
     case Operacao of
       '√': begin
           {$asmmode intel}
@@ -363,6 +363,9 @@ begin
         end;
       end;
       'tan': begin
+        if (DegreeRadio.Checked = True) then
+          FirstNumber := (FirstNumber * PiCalculo) / 180;
+        //A FPU calcula somente em radianos, eh necessario a conversao de grau para radianos
     {$asmmode intel}
         asm
                  FINIT
@@ -374,6 +377,8 @@ begin
         end;
       end;
       'cos': begin
+        if (DegreeRadio.Checked = True) then
+          FirstNumber := (FirstNumber * PiCalculo) / 180;
     {$asmmode intel}
         asm
                  FINIT
@@ -383,6 +388,8 @@ begin
         end;
       end;
       'sin': begin
+        if (DegreeRadio.Checked = True) then
+          FirstNumber := (FirstNumber * PiCalculo) / 180;
     {$asmmode intel}
         asm
                  FINIT
