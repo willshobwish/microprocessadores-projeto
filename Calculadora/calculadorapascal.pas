@@ -57,7 +57,6 @@ type
     //---Procedimentos criados para o projeto---
     procedure ColocaNumero(Numero: string);
     procedure LimparZero();
-    procedure ClearOperationFlag();
     procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     procedure Backspace();
@@ -413,15 +412,6 @@ begin
     Delete(Temp, Length(Temp), 1);
     Visor.Text := Temp;
   end;
-end;
-
-
-procedure TCalculator.ClearOperationFlag();
-begin
-  Sum := False;
-  Subtraction := False;
-  Division := False;
-  Multiplication := False;
 end;
 
 procedure TCalculator.LimparZero();
