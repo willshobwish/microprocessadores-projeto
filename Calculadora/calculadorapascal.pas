@@ -235,9 +235,12 @@ end;
 
 procedure TCalculator.Calculo(Operacao: string);
 var
-  FirstNumber, SecondNumber, Resultado, PiCalculo: real;
+  FirstNumber, SecondNumber, Resultado, PiCalculo, Dez: real;
 begin
   PiCalculo := Pi();
+  //Calcula o pi direto da FPU
+  Dez := 10;
+  //Variavel com 10 para utilizar como base em logaritmo
   if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
     (Operacao = '/') or (Operacao = '^')) then
     //Checa se a operacao necessita de dois operandos
@@ -341,7 +344,16 @@ begin
       'log': begin
           {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD1
+                 FLD     FirstNumber
+                 FYL2X
+                 FLD1
+                 FLD     Dez
+                 //Logaritmo de base 10
+                 FYL2X
+                 FDIV
+                 FSTP    Resultado
         end;
       end;
       '!': begin
@@ -667,7 +679,7 @@ end;
 procedure TCalculator.LogButtonClick(Sender: TObject);
 begin
   EnviarOperacao('log', 'log');
-  EnviarOperacao('(', '(');
+  ParentesesEsquerdo();
 end;
 
 procedure TCalculator.ListaOperandosChange(Sender: TObject);
