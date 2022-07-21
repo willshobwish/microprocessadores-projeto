@@ -492,11 +492,9 @@ end;
 procedure TCalculator.Inverso(Angulo: string);
 begin
   ColocaNumero('1');
-  //PilhaPolonesa[IndexPilhaPolonesa] := '1';
-  //IndexPilhaPolonesa += 1;
   EnviarOperacao('/', '/');
   EnviarOperacao(Angulo, Angulo);
-  //EnviarOperacao('(', '(');
+  ParentesesEsquerdo();
 end;
 
 //---Fim das procedures---
@@ -673,7 +671,7 @@ end;
 procedure TCalculator.LnButtonClick(Sender: TObject);
 begin
   EnviarOperacao('ln', 'ln');
-  EnviarOperacao('(', '(');
+  ParentesesEsquerdo();
 end;
 
 procedure TCalculator.LogButtonClick(Sender: TObject);
