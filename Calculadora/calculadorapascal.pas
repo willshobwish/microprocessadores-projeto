@@ -846,7 +846,7 @@ end;
 procedure TCalculator.SqrtxButtonClick(Sender: TObject);
 begin
   EnviarOperacao('√', '√');
-  EnviarOperacao('(', '(');
+  ParentesesEsquerdo();
 end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
