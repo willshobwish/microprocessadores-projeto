@@ -367,7 +367,9 @@ begin
         asm
                  FINIT
                  FLD   FirstNumber
-                 FSIN
+                 FSINCOS
+                 //seno/cosseno = tangente
+                 FDIV
                  FSTP  Resultado
         end;
       end;
