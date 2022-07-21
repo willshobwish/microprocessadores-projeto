@@ -63,7 +63,7 @@ type
     procedure Backspace();
     procedure PilhaTemporariaParaL1(Operador: string);
     procedure Calculo(Operacao: string);
-    procedure Inverso(Numero, Angulo: string);
+    procedure Inverso(Angulo: string);
     //---Fim da criacao dos procedimentos---
     procedure BackspaceButtonClick(Sender: TObject);
     procedure ClearEntryButtonClick(Sender: TObject);
@@ -482,12 +482,14 @@ begin
   end;
 end;
 
-procedure TCalculator.Inverso(Numero, Angulo: string);
+procedure TCalculator.Inverso(Angulo: string);
 begin
   ColocaNumero('1');
-  ColocaNumero(Numero);
+  //PilhaPolonesa[IndexPilhaPolonesa] := '1';
+  //IndexPilhaPolonesa += 1;
+  EnviarOperacao('/', '/');
   EnviarOperacao(Angulo, Angulo);
-  EnviarOperacao('/', '');
+  //EnviarOperacao('(', '(');
 end;
 
 //---Fim das procedures---
