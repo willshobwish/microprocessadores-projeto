@@ -148,7 +148,7 @@ end;
 //---Inicio de criacao de funcoes para o projeto---
 //Funcoes para realizar os calculos na FPU
 function ValidaOperador(Operador: string): boolean;
-//Quando essa funcao eh invocada, retorna se o operador eh valido ou nao
+  //Quando essa funcao eh invocada, retorna se o operador eh valido ou nao
 begin
   case Operador of
     '+': Exit(True);
@@ -236,12 +236,13 @@ end;
 
 procedure TCalculator.Calculo(Operacao: string);
 var
-  FirstNumber, SecondNumber, Resultado, PiCalculo, Dez: real;
+  FirstNumber, SecondNumber, Resultado, PiCalculo, Dez, Euler: real;
 begin
   PiCalculo := Pi();
   //Calcula o pi direto da FPU
   Dez := 10;
   //Variavel com 10 para utilizar como base em logaritmo
+  Euler := 2.71828;
   if ((Operacao = '+') or (Operacao = '-') or (Operacao = '*') or
     (Operacao = '/') or (Operacao = '^')) then
     //Checa se a operacao necessita de dois operandos
@@ -300,7 +301,7 @@ begin
       '^': begin
       {$asmmode intel}
         asm
-        //Utilizacao das instrucoes apresentados durante a aula
+                 //Utilizacao das instrucoes apresentados durante a aula
                  FINIT
                  FLD     FirstNumber
                  FLD     SecondNumber
@@ -340,7 +341,16 @@ begin
       'ln': begin
           {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD1
+                 FLD     FirstNumber
+                 FYL2X
+                 FLD1
+                 FLD     Euler
+                 //Logaritmo de base constante de Euler
+                 FYL2X
+                 FDIV
+                 FSTP    Resultado
         end;
       end;
       'log': begin
