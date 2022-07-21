@@ -569,8 +569,15 @@ end;
 
 procedure TCalculator.CosButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('cos', 'cos');
-  EnviarOperacao('(', '(');
+  if InverseCheck.Checked = True then
+  begin
+    Inverso('cos');
+  end
+  else
+  begin
+    EnviarOperacao('cos', 'cos');
+    ParentesesEsquerdo();
+  end;
 end;
 
 procedure TCalculator.DegreeRadioChange(Sender: TObject);
@@ -827,7 +834,7 @@ begin
   else
   begin
     EnviarOperacao('sin', 'sin');
-    EnviarOperacao('(', '(');
+    ParentesesEsquerdo();
   end;
 end;
 
@@ -844,8 +851,15 @@ end;
 
 procedure TCalculator.TanButtonClick(Sender: TObject);
 begin
-  EnviarOperacao('tan', 'tan');
-  EnviarOperacao('(', '(');
+  if InverseCheck.Checked = True then
+  begin
+    Inverso('tan');
+  end
+  else
+  begin
+    EnviarOperacao('tan', 'tan');
+    ParentesesEsquerdo();
+  end;
 end;
 
 procedure TCalculator.Button3Click(Sender: TObject);
