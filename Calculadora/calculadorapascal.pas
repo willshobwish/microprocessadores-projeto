@@ -187,7 +187,6 @@ begin
     'sin': Exit(5);
     '~': Exit(6);
   end;
-  Exit(0);
 end;
 
 function Pi(): real;
