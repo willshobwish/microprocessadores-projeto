@@ -404,6 +404,7 @@ begin
                  FINIT
                  FLD   FirstNumber
                  FCHS
+                 //Muda o sinal do numero e retorna o resultado
                  FSTP  Resultado
         end;
       end;
@@ -680,6 +681,7 @@ end;
 
 procedure TCalculator.LeftParenthesisClick(Sender: TObject);
 begin
+  //  Precisa de um procedimento especial porque nao pode ser processado como os outros operadores
   ParentesesEsquerdo();
 end;
 
