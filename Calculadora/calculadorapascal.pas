@@ -699,7 +699,7 @@ end;
 
 procedure TCalculator.MemoryClearButtonClick(Sender: TObject);
 begin
-  MemoryStore := 0;
+
 end;
 
 procedure TCalculator.MemoryPlusButtonClick(Sender: TObject);
@@ -709,8 +709,7 @@ end;
 
 procedure TCalculator.MemoryRestoreButtonClick(Sender: TObject);
 begin
-  MemoryCalculator := MemoryStore;
-  Visor.Text := floattostr(MemoryCalculator);
+
 end;
 
 procedure TCalculator.MemoryStoreButtonClick(Sender: TObject);
