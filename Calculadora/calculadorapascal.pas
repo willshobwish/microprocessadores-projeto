@@ -462,6 +462,7 @@ begin
 end;
 
 procedure TCalculator.PilhaTemporariaPolonesa(Operador: string);
+//Procedimento que transfere os operadores da pilha temporaria para a polonesa
 var
   PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
 begin
@@ -496,7 +497,7 @@ begin
 end;
 
 procedure TCalculator.Inverso(Angulo: string);
-//A operacao inversa pode ser descrita como 1/angulo = arco
+//A operacao inversa pode ser descrita como 1/angulo = secante
 begin
   TemporaryNumber := TemporaryNumber + '1';
   ClearEntryFlag := False;
@@ -544,7 +545,7 @@ begin
     PilhaTemporariaOperadores[Index] := '';
   end;
   IndexPilhaPolonesa := 0;
-  //Reseta os indices dos vetores
+  //Reseta os indices dos vetores e flags utilizados
   IndexPilhaOperadores := 0;
   Visor.Text := '';
   MemoryCalculator := 0;
