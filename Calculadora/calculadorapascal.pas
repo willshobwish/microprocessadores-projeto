@@ -215,7 +215,7 @@ end;
 
 procedure TCalculator.Calculo(Operacao: string);
 var
-  FirstNumber, SecondNumber, Resultado, PiCalculo, Dez, Euler: real;
+  FirstNumber, SecondNumber, Resultado, PiCalculo, Dez, Euler, ContadorFatorial: real;
 begin
   PiCalculo := Pi();
   //Calcula o pi direto da FPU
@@ -350,9 +350,42 @@ begin
         end;
       end;
       '!': begin
+        ContadorFatorial := FirstNumber;
+        //A cada execucao, sera decrementado 1 do contador e esse contador sera utilizado para a multiplicacao
     {$asmmode intel}
         asm
-
+                 FINIT
+                 FLD   FirstNumber;
+                 FLD   ContadorFatorial
+                 //Carrega o numero e o contador
+                 FLD1
+                 //Carrega 1 na pilha para subtrair do contador
+                 FSUB
+                 //Subtrai 1 do contador
+                 FST   ContadorFatorial
+                 //Salva o numero do contador
+                 @repeticao:
+                 FTST
+                 //Codigo de comparacao na FPU
+                 FSTSW AX
+                 //Copia do valor de CC
+                 SAHF
+                 //Envio do numero de AX para os flags para ser utilizado nas instrucoes condicionais
+                 JE    @final  //se o topo for zero acabou o loop
+                 FMUL
+                 //Faz a multiplicao do numero-1 * numero
+                 FLD   ContadorFatorial
+                 FLD1
+                 //Carrega 1 na pilha para subtrair do contador
+                 FSUB
+                 //Subtrai 1 do contador
+                 FST   ContadorFatorial
+                 //Salva o novo numero do contador
+                 JMP   @repeticao
+                 @final:
+                 FXCH
+                 //Como no topo esta o contador, sera necessario trocar de posicao dos elementos da pilha
+                 FST   Resultado
         end;
       end;
       'tan': begin
