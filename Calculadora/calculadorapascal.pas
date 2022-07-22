@@ -397,7 +397,7 @@ begin
                  FINIT
                  FLD   FirstNumber
                  FSINCOS
-                 //seno/cosseno = tangente
+                 //tangente = seno/cosseno
                  FDIV
                  FSTP  Resultado
         end;
