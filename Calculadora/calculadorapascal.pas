@@ -335,8 +335,10 @@ begin
       'log': begin
           {$asmmode intel}
         asm
+                 //Utilizacao do algoritmo apresentado em aula
                  FINIT
                  FLD1
+                 //Carrega 1 na pilha
                  FLD     FirstNumber
                  FYL2X
                  FLD1
@@ -437,6 +439,7 @@ begin
 end;
 
 procedure TCalculator.EnviarOperacao(Operacao, Simbolo: string);
+//Este procedimento utiliza como parametro o tipo de operacao e o simbolo que aparecera no visor
 begin
   FloatingPoint := False;
   //Verifica se ha zeros no visor da calculadora
@@ -611,7 +614,7 @@ begin
   end;
   while (IndexPilhaOperadores > 0) do
     //Pega todos os operadores e transfere para a pilha polonesa
-    //Como ja foi organizado de maneira pos fixa, pode ir transferindo do final para o comeco para a pilha polonesa
+    //Como ja foi organizado de maneira pos fixa, podera ser transferido do final para o comeco para a pilha polonesa
   begin
     PilhaPolonesa[IndexPilhaPolonesa] :=
       PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
@@ -619,6 +622,7 @@ begin
     IndexPilhaPolonesa += 1;
   end;
   IndexPilhaCalculo := 0;
+  //Reseta o indice de calculo
   while Index < IndexPilhaPolonesa do
   begin
     if ValidaOperador(PilhaPolonesa[Index]) then
@@ -784,17 +788,20 @@ end;
 
 procedure TCalculator.RightParenthesisClick(Sender: TObject);
 begin
+  //Quando o botao de parenteses direito eh precionado, todos os operadores precisa ser transferido para a pilha polonesa
   if TemporaryNumber <> '' then
-    //Quando o botao de parenteses direito eh acionado, ele precisa transferir todas as operacoes de dentro para a pilha polonesa
-    //Esse processo dura ate encontrar o parenteses esquerdo
+    //Checa se ha numero na variavel temporaria
   begin
     PilhaPolonesa[IndexPilhaPolonesa] := TemporaryNumber;
     IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
   end;
   if Visor.Text <> '' then
+    //Checa se ha algo no visor para realizar a operacoes
   begin
     while (PilhaTemporariaOperadores[IndexPilhaOperadores - 1] <> '(') do
+      //Quando o botao de parenteses direito eh acionado, ele precisa transferir todas as operacoes de dentro para a pilha polonesa
+      //Esse processo dura ate encontrar o parenteses esquerdo
     begin
       PilhaPolonesa[IndexPilhaPolonesa] :=
         PilhaTemporariaOperadores[IndexPilhaOperadores - 1];
@@ -813,6 +820,7 @@ begin
 end;
 
 procedure TCalculator.SignalButtonClick(Sender: TObject);
+//Numero negativo
 begin
   EnviarOperacao('~', '-');
 end;
