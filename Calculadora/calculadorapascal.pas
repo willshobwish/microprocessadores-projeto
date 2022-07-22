@@ -59,7 +59,7 @@ type
     procedure LimparZero();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     procedure Backspace();
-    procedure PilhaTemporariaParaL1(Operador: string);
+    procedure PilhaTemporariaPolonesa(Operador: string);
     procedure Calculo(Operacao: string);
     procedure Inverso(Angulo: string);
     procedure ParentesesEsquerdo();
@@ -451,14 +451,14 @@ begin
     IndexPilhaPolonesa += 1;
     TemporaryNumber := '';
   end;
-  PilhaTemporariaParaL1(Operacao);
+  PilhaTemporariaPolonesa(Operacao);
   //Invoca o procedimento para realizar a pilha polonesa a cada operacao que eh enviada
   Visor.Text := Visor.Text + Simbolo;
   PilhaTemporariaOperadores[IndexPilhaOperadores] := Operacao;
   IndexPilhaOperadores += 1;
 end;
 
-procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
+procedure TCalculator.PilhaTemporariaPolonesa(Operador: string);
 var
   PrecedenciaOperador, PrecedenciaOperadorPilha: integer;
 begin
