@@ -57,7 +57,6 @@ type
     //---Procedimentos criados para o projeto---
     procedure ColocaNumero(Numero: string);
     procedure LimparZero();
-    procedure Debug();
     procedure EnviarOperacao(Operacao, Simbolo: string);
     procedure Backspace();
     procedure PilhaTemporariaParaL1(Operador: string);
@@ -207,26 +206,6 @@ end;
 
 //---Fim das funcoes---
 //---Inicio das procedures---
-procedure TCalculator.Debug();
-//Procedimento para visualizacao da lista
-var
-  Index: integer;
-begin
-  for Index := 0 to IndexPilhaOperadores do
-  begin
-    ListaOperadores.Text := ListaOperadores.Text + '[' + IntToStr(Index) +
-      ']' + PilhaTemporariaOperadores[Index] + sLineBreak;
-  end;
-  for Index := 0 to IndexPilhaPolonesa do
-  begin
-    ListaOperandos.Text :=
-      ListaOperandos.Text + '[' + IntToStr(Index) + ']' +
-      PilhaPolonesa[Index] + sLineBreak;
-  end;
-  ListaOperadores.Lines.Add('------');
-  ListaOperandos.Lines.Add('------');
-end;
-
 procedure TCalculator.ParentesesEsquerdo();
 begin
   PilhaTemporariaOperadores[IndexPilhaOperadores] := '(';
@@ -477,7 +456,6 @@ begin
   Visor.Text := Visor.Text + Simbolo;
   PilhaTemporariaOperadores[IndexPilhaOperadores] := Operacao;
   IndexPilhaOperadores += 1;
-  Debug();
 end;
 
 procedure TCalculator.PilhaTemporariaParaL1(Operador: string);
@@ -565,10 +543,6 @@ begin
   IndexPilhaPolonesa := 0;
   //Reseta os indices dos vetores
   IndexPilhaOperadores := 0;
-  //[Debug]
-  ListaOperandos.Lines.Add('---Fim da operação---');
-  ListaOperadores.Lines.Add('---Fim da operação---');
-  //[Debug]
   Visor.Text := '';
   MemoryCalculator := 0;
   FloatingPoint := False;
@@ -661,7 +635,6 @@ begin
     index += 1;
   end;
   Visor.Text := PilhaCalculoResultado[IndexPilhaCalculo - 1];
-  Debug();
 end;
 
 procedure TCalculator.ExButtonClick(Sender: TObject);
@@ -833,7 +806,6 @@ begin
     Visor.Text := Visor.Text + ')';
     //Nao pode utilizar a funcao de enviar operacoes porque ele acionaria flags e indices que apresentaria o mal funcionamento da calculadora
   end;
-  debug();
 end;
 
 procedure TCalculator.Button7Click(Sender: TObject);

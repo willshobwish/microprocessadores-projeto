@@ -1,11 +1,11 @@
 object Calculator: TCalculator
-  Left = 595
-  Height = 537
+  Left = 599
+  Height = 452
   Top = 209
-  Width = 955
+  Width = 407
   Caption = 'Calculadora'
-  ClientHeight = 537
-  ClientWidth = 955
+  ClientHeight = 452
+  ClientWidth = 407
   OnCreate = FormCreate
   LCLVersion = '2.2.2.0'
   object DivisionButton: TButton
@@ -165,7 +165,7 @@ object Calculator: TCalculator
     Left = 40
     Height = 23
     Top = 24
-    Width = 440
+    Width = 330
     Alignment = taRightJustify
     OnChange = VisorChange
     TabOrder = 18
@@ -355,13 +355,15 @@ object Calculator: TCalculator
   object ListaOperandos: TMemo
     Left = 488
     Height = 362
-    Top = 80
+    Top = 81
     Width = 136
+    Enabled = False
     Lines.Strings = (
       'Números'
     )
     OnChange = ListaOperandosChange
     TabOrder = 39
+    Visible = False
   end
   object SqrButton: TButton
     Left = 320
@@ -377,11 +379,13 @@ object Calculator: TCalculator
     Height = 361
     Top = 81
     Width = 136
+    Enabled = False
     Lines.Strings = (
       'Operadores'
     )
     OnChange = ListaOperadoresChange
     TabOrder = 40
+    Visible = False
   end
   object ListaCalculo: TMemo
     Left = 776
@@ -392,5 +396,6 @@ object Calculator: TCalculator
       'Calculo'
     )
     TabOrder = 41
+    Visible = False
   end
 end
