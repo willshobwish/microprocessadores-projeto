@@ -1,3 +1,6 @@
+//Andressa Yida Pinheiro de Souza
+//Willian Yoshio Murayama
+
 unit CalculadoraPascal;
 
 {$mode objfpc}{$H+}
@@ -116,7 +119,7 @@ type
   private
   public
   end;
-
+//Variaveis globais para a calculadora
 var
   Calculator: TCalculator;
   //Declaracao de variavel para a operacao de restauracao de memoria
@@ -136,6 +139,7 @@ implementation
 {$R *.lfm}
 
 { TCalculator }
+//Inicializacao dos indices e algumas variaveis quando a calculadora eh executada pela primeira vz
 procedure Inicializacao();
 begin
   IndexPilhaPolonesa := 0;
@@ -144,7 +148,7 @@ begin
   PrecedenciaAtual := 0;
 end;
 
-//---Inicio de criacao de funcoes para o projeto---
+//---Inicio da criacao de funcoes para o projeto---
 //Funcoes para realizar os calculos na FPU
 function ValidaOperador(Operador: string): boolean;
   //Quando essa funcao eh invocada, retorna se o operador eh valido ou nao
@@ -534,6 +538,7 @@ procedure TCalculator.Inverso(Angulo: string);
 begin
   TemporaryNumber := TemporaryNumber + '1';
   ClearEntryFlag := False;
+  //A parte abaixo seria somente para a modificacao da visualizacao
   EnviarOperacao('/', '');
   EnviarOperacao(Angulo, Angulo + '^-1');
   ParentesesEsquerdo();
